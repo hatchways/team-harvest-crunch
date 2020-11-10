@@ -1,4 +1,5 @@
 import { createMuiTheme } from "@material-ui/core";
+import { spacing } from "@material-ui/system"
 
 export const theme = createMuiTheme({
   typography: {
@@ -9,6 +10,6 @@ export const theme = createMuiTheme({
     }
   },
   palette: {
-    primary: { main: "#DF1B1B" }
-  }
+    primary: { main: "#000000" }
+  },
 });
