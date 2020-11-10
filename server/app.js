@@ -1,5 +1,6 @@
 const createError = require("http-errors");
 const express = require("express");
+const mongoose = require("mongoose");
 const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -11,12 +12,21 @@ const { json, urlencoded } = express;
 
 var app = express();
 
+// db
+mongoose.connect(process.env.mongodb_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true
+}).then(() => console.log("database connected")).catch(e => console.log(e.message))
+
 app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
 
+// routes
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 
