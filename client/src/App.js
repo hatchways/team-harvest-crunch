@@ -4,6 +4,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 import { theme } from "./themes/theme";
 import LandingPage from "./pages/Landing";
+import S3Test from "./pages/S3Test";
 import CreateProduct from "./pages/CreateProduct";
 import NavBar from "./pages/NavBar";
 
@@ -15,6 +16,7 @@ function App() {
       <NavBar />
       <BrowserRouter>
         {/* <Route path="/" component={LandingPage} /> */}
+        <Route path="/S3Test" component={S3Test} />
         <Route path="/create-product/" component={CreateProduct} />
       </BrowserRouter>
     </MuiThemeProvider>
