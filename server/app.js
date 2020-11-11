@@ -7,32 +7,42 @@ const mongoose = require("mongoose");
 
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
+const userRouter = require("./routes/user");
 
 const { json, urlencoded } = express;
 
 var app = express();
 
 // db connection
-mongoose.connect(process.env.mongodb_URI, {useNewUrlParser: true, useUnifiedTopology: true })
-.then(() => console.log("database connected"))
-.catch(err => console.log(err.message))
+mongoose
+  .connect(process.env.mongodb_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: true,
+  })
+  .then(() => console.log("database connected"))
+  .catch((err) => console.log(err.message));
 
+// middleware
 app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
 
+// API routes
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
+app.use("/user", userRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
