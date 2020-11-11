@@ -14,8 +14,8 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <NavBar />
       <BrowserRouter>
-        <Route path="/" component={LandingPage} />
-        <Route path="/createproduct/" component={CreateProduct} />
+        {/* <Route path="/" component={LandingPage} /> */}
+        <Route path="/create-product/" component={CreateProduct} />
       </BrowserRouter>
     </MuiThemeProvider>
   );

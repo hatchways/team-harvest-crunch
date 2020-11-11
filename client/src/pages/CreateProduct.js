@@ -20,13 +20,21 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       width: theme.spacing(16),
       height: theme.spacing(16),
+      marginTop: theme.spacing(4),
     },
   },
   rootForm: {
     '& > *': {
       margin: theme.spacing(1),
     },
+    marginTop: theme.spacing(17),
   },
+  marginTop136: {
+    marginTop: theme.spacing(17),
+  },
+  marginTop64: {
+    marginTop: theme.spacing(8),
+  }
 }));
 
 const typeOfProduct = [
@@ -60,9 +68,9 @@ export default function CreateProduct() {
         <Container>
             <Grid container spacing={1}>
               <Grid item xs={6}>
-                <h1 className="margin-top-60">Upload new product</h1>
+                <h1 className={classes.marginTop136}>Upload new product</h1>
 
-                <div className={classes.rootPaper + ' margin-top-30'}>
+                <div className={classes.rootPaper}>
                   <Paper elevation={3} />
                   <Paper elevation={3} />
                   <Paper elevation={3} />
@@ -74,7 +82,7 @@ export default function CreateProduct() {
                 </div>
               </Grid>
               <Grid item xs={6}>
-                <form className={classes.rootForm + " margin-top-140"}>
+                <form className={classes.rootForm}>
                   <TextField id="outlined-basic" label="Title" variant="outlined" fullWidth />
                   <TextField id="outlined-basic" label="Description" variant="outlined" fullWidth rows={4} multiline/>
                   <Grid container spacing={1}>
@@ -110,7 +118,7 @@ export default function CreateProduct() {
                 </form>
               </Grid>
             </Grid>
-            <Grid className="margin-top-60" container justify="center">
+            <Grid className={classes.marginTop64} container justify="center">
               <Grid item xs={4}>
                 <Button variant="outlined" fullWidth size="large">Upload</Button>
               </Grid>
