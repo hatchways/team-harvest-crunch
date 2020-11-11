@@ -3,6 +3,7 @@ const express = require("express");
 const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const mongoose = require("mongoose");
 
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
@@ -10,6 +11,11 @@ const pingRouter = require("./routes/ping");
 const { json, urlencoded } = express;
 
 var app = express();
+
+// db connection
+mongoose.connect(process.env.mongodb_URI, {useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => console.log("database connected"))
+.catch(err => console.log(err.message))
 
 app.use(logger("dev"));
 app.use(json());
