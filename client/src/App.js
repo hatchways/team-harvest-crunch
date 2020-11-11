@@ -4,6 +4,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 import { theme } from "./themes/theme";
 import LandingPage from "./pages/Landing";
+import S3Test from "./pages/S3Test";
 
 import "./App.css";
 
@@ -12,6 +13,7 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
         <Route path="/" component={LandingPage} />
+        <Route path="/S3Test" component={S3Test} />
       </BrowserRouter>
     </MuiThemeProvider>
   );
