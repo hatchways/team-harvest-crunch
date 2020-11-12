@@ -57,21 +57,14 @@ router.post(
     }
 );
 
-// @route     GET api/product/:username/:product
+// @route     GET api/product/:id
 // @desc      Get product information
 // @access    Public
-router.get("/:username/:product", async (req, res) => {
+router.get("/:id", async (req, res) => {
     try {
-        let username = req.params.username;
-        let productName = req.params.product;
+        let id = req.params.id;
 
-        let user = await User.findOne({ name: username });
-
-        if (!user) {
-            return res.status(400).json({ msg: "User doesn't exist" });
-        }
-
-        let product = await Product.findOne({ title: productName, user_id: user._id });
+        let product = await Product.findById(id);
 
         if (!product) {
             return res.status(400).json({ msg: "Product doesn't exist" });
@@ -81,7 +74,7 @@ router.get("/:username/:product", async (req, res) => {
             title: product.title,
             description: product.description,
             price: product.price,
-            user: user.name,
+            user_id: product.user_id,
             photos: product.photos,
         })
 
