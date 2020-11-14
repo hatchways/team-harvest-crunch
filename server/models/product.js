@@ -17,6 +17,9 @@ const ProductSchema = mongoose.Schema({
         type: mongoose.ObjectId,
         required: true,
     },
+    productType: {
+        type: String,
+    },
     photos: {
         type: [String],
         required: false,
