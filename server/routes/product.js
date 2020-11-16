@@ -81,7 +81,7 @@ router.post(
             if (price) {product.price = price;}
             if (user_id) {
                 user = await User.findById(user_id);
-                product.user_id = user._id;
+                product.userId = user._id;
             }
             if (photos) {product.photos = photos;}
 
