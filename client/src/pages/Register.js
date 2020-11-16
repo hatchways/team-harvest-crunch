@@ -11,7 +11,6 @@ import Joi from "joi-browser";
 const Register = () => {
   const [user, setUser] = useState({ name: "", email: "", password: "" });
   const [errors, setErrors] = useState({});
-  const { name, email, password } = user;
   const schema = {
     name: Joi.string().required().label("Name"),
     email: Joi.string().required().email().label("Email"),
@@ -39,7 +38,6 @@ const Register = () => {
     const errors = validate();
     setErrors({ errors: errors || {} });
     if (errors) return;
-    console.log(user);
     setUser({ name: "", email: "", password: "" });
   };
   const handleChange = ({ currentTarget }) => {
@@ -51,7 +49,7 @@ const Register = () => {
 
     setUser({ ...user, [currentTarget.id]: currentTarget.value });
   };
-  const addFormName = (form_name) => {
+  const addFormName = (formName) => {
     return (
       <Grid>
         <Typography
@@ -59,7 +57,7 @@ const Register = () => {
           component="h1"
           variant="inherit"
         >
-          {form_name}
+          {formName}
         </Typography>
       </Grid>
     );

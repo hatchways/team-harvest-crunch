@@ -11,7 +11,6 @@ import Joi from "joi-browser";
 const Login = () => {
   const [user, setUser] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
-  const { email, password } = user;
   const schema = {
     email: Joi.string().required().email().label("Email"),
     password: Joi.string().required().min(6).label("Password"),
@@ -38,7 +37,6 @@ const Login = () => {
     const errors = validate();
     setErrors({ errors: errors || {} });
     if (errors) return;
-    console.log(user);
     setUser({ name: "", email: "", password: "" });
   };
   const handleChange = ({ currentTarget }) => {
