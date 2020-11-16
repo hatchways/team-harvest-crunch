@@ -25,23 +25,16 @@ router.post(
         const { title, description, price, user_id, photos } = req.body;
 
         try {
-            let user = await User.findById(user_id);
+            const user = await User.findById(user_id);
             if (!user) {
                 return res.status(400).json({ msg: "User doesn't exist" });
             }
 
-            let product = await Product.findOne({ title: title, user_id: user._id });
-
-            if (product) {
-                return res.status(400).json({ msg: "Product already exists" });
-            }
-
-
-            product = new Product({
+            const product = new Product({
                 title,
                 description,
                 price,
-                user_id: user._id,
+                userId: user_id,
                 photos,
             });
 
@@ -49,7 +42,7 @@ router.post(
 
             
 
-            res.json({ id: product.id });
+            res.json(product);
 
         } catch (err) {
             console.error(err.message);
@@ -71,19 +64,17 @@ router.post(
         const { title, description, price, user_id, photos } = req.body;
 
         try {
-            let product_id = req.params.id;
+            const productId = req.params.id;
 
-            if (!mongoose.Types.ObjectId.isValid(product_id)){
+            if (!mongoose.Types.ObjectId.isValid(productId)){
                 return res.status(400).json({ msg: "product_id not valid" });
             }
 
-            let product = await Product.findById(product_id);
+            let product = await Product.findById(productId);
 
             if (!product) {
                 return res.status(400).json({ msg: "Product doesn't exist" });
             }
-
-            let user = await User.findById(product.user_id);
 
             if (title) {product.title = title;}
             if (description) {product.description = description;}
@@ -96,7 +87,7 @@ router.post(
 
             await product.save();
 
-            res.json({ id: product.id });
+            res.json(product);
 
         } catch (err) {
             console.error(err.message);
@@ -140,13 +131,7 @@ router.get("/:shop_id/products", async (req, res) => {
             return res.status(400).json({ msg: "id not valid" });
         }
 
-        let user = await User.findById(id);
-
-        if (!user) {
-             return res.status(400).json({ msg: "User doesn't exist" });
-        }
-
-        let products = await Product.find({ user_id: id })
+        let products = await Product.find({ userId: id })
 
         res.json(products);
 
