@@ -13,8 +13,8 @@ const ProductSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
-    user_id: {
-        type: mongoose.ObjectId,
+    userId: {
+        type: String,
         required: true,
     },
     productType: {
