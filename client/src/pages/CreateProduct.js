@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     '& > *': {
       margin: theme.spacing(1),
     },
-    marginTop: theme.spacing(17),
+    marginTop: theme.spacing(30),
   },
   marginTop136: {
     marginTop: theme.spacing(17),
@@ -73,6 +73,7 @@ const config = {
   region: 'us-east-2',
   accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY,
+  dirName: '5fac90ecf662c13aa4730775',
 }
 
 export default function CreateProduct() {
@@ -87,8 +88,7 @@ export default function CreateProduct() {
   const [files, setFiles] = useState([]);
   
   const handlePhotoButton = event => {
-    let id = event.target.id;
-    let filename = "5fac90ecf662c13aa4730775_" + title + "_" + id;
+    let filename = event.target.files[0].name.split(".")[0];
     S3Client.uploadFile(event.target.files[0], filename)
       .then(data => {
         files.push(data.location);
