@@ -20,10 +20,10 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: true,
+    useFindAndModify: true
   })
   .then(() => console.log("database connected"))
-  .catch((err) => console.log(err.message));
+  .catch(err => console.log(err.message));
 
 // middleware
 app.use(logger("dev"));

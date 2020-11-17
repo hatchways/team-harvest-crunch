@@ -4,14 +4,13 @@ export default (state, action) => {
       return {
         ...state,
         isAuthenticated: true,
-        user: action.payload,
+        user: action.payload
       };
     case "REGISTER_USER":
     case "LOGIN_USER":
       return {
         ...state,
-        ...action.payload,
-        isAuthenticated: true,
+        isAuthenticated: true
       };
 
     default:
