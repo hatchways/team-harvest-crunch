@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -7,13 +7,17 @@ import { Paper } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
 import Joi from "joi-browser";
+import AuthContext from "../context/authContext";
 
 const Login = () => {
   const [user, setUser] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
+  const authContext = useContext(AuthContext);
+  const { login } = authContext;
+
   const schema = {
     email: Joi.string().required().email().label("Email"),
-    password: Joi.string().required().min(6).label("Password"),
+    password: Joi.string().required().min(6).label("Password")
   };
 
   const validate = () => {
@@ -32,12 +36,13 @@ const Login = () => {
     const { error } = Joi.validate(obj, schemaObj);
     return error ? error.details[0].message : null;
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const errors = validate();
     setErrors({ errors: errors || {} });
     if (errors) return;
-    setUser({ name: "", email: "", password: "" });
+    const backendErr = await login(user);
+    backendErr && setErrors(backendErr);
   };
   const handleChange = ({ currentTarget }) => {
     const newErrors = { ...errors };
@@ -48,7 +53,7 @@ const Login = () => {
 
     setUser({ ...user, [currentTarget.id]: currentTarget.value });
   };
-  const addFormName = (form_name) => {
+  const addFormName = form_name => {
     return (
       <Grid>
         <Typography
@@ -75,14 +80,14 @@ const Login = () => {
           value={user[id]}
           onChange={handleChange}
           InputLabelProps={{
-            shrink: true,
+            shrink: true
           }}
           variant="outlined"
         />
       </Grid>
     );
   };
-  const showError = (TextField) => {
+  const showError = TextField => {
     return (
       <div>
         <Alert severity="error">{errors[TextField]}</Alert>
@@ -90,7 +95,7 @@ const Login = () => {
     );
   };
 
-  const addButton = (desc) => {
+  const addButton = desc => {
     return (
       <Button
         variant="contained"
@@ -109,8 +114,9 @@ const Login = () => {
       <Paper elevation={3}>
         {addFormName("Sign in")}
 
-        <form method="get" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <Grid container alignItems="center" direction="column" spacing={1}>
+            {errors["backendErr"] && showError("backendErr")}
             {addInputField("email", "Email", "Please enter email id")}
             {errors["email"] && showError("email")}
 

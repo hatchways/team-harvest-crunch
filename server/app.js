@@ -4,6 +4,7 @@ const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
@@ -20,14 +21,15 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: true,
+    useFindAndModify: true
   })
   .then(() => console.log("database connected"))
-  .catch((err) => console.log(err.message));
+  .catch(err => console.log(err.message));
 
 // middleware
 app.use(logger("dev"));
 app.use(json());
+app.use(cors());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
