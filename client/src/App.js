@@ -7,7 +7,7 @@ import LandingPage from "./pages/Landing";
 import S3Test from "./pages/S3Test";
 import CreateProduct from "./pages/CreateProduct";
 import NavBar from "./pages/NavBar";
-
+import Product from "./pages/Product";
 import "./App.css";
 
 function App() {
@@ -17,7 +17,8 @@ function App() {
       <BrowserRouter>
         {/* <Route path="/" component={LandingPage} /> */}
         <Route path="/S3Test" component={S3Test} />
-        <Route path="/create-product/" component={CreateProduct} />
+        <Route path="/create-product" component={CreateProduct} />
+        <Route path="/product/:id" component={Product} />
       </BrowserRouter>
     </MuiThemeProvider>
   );
