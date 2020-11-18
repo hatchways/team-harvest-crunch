@@ -22,7 +22,7 @@ router.post(
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { title, description, price, user_id, photos } = req.body;
+        const { title, description, price, user_id, productType, photos } = req.body;
 
         try {
             const user = await User.findById(user_id);
@@ -30,12 +30,21 @@ router.post(
                 return res.status(400).json({ msg: "User doesn't exist" });
             }
 
-            const product = new Product({
+            let product = await Product.findOne({ title: title, user_id: user._id });
+
+            if (product) {
+                return res.status(400).json({ msg: "Product already exists" });
+            }
+
+            let photoArray = photos.split(",");
+
+            product = new Product({
                 title,
                 description,
                 price,
                 userId: user_id,
-                photos,
+                productType,
+                photos: photoArray,
             });
 
             await product.save();
@@ -61,7 +70,7 @@ router.post(
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { title, description, price, user_id, photos } = req.body;
+        const { title, description, price, user_id, productType, photos } = req.body;
 
         try {
             const productId = req.params.id;
@@ -83,7 +92,9 @@ router.post(
                 user = await User.findById(user_id);
                 product.userId = user._id;
             }
+            if (productType) {product.productType = productType;}
             if (photos) {product.photos = photos;}
+            
 
             await product.save();
 
