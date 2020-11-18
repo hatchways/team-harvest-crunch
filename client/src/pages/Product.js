@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Container, Grid, AppBar, Tabs, Tab, Button } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import ImageGallery from "react-image-gallery";
+import "react-image-gallery/styles/css/image-gallery.css";
 
 function TabPanel(props) {
     const { title, description, value, index, ...other } = props;
@@ -37,7 +39,7 @@ function a11yProps(index) {
 
 const useStyles = makeStyles((theme) => ({
     rootImg: {
-        width: "100%",
+        height:"700px",
     },
     rootGrid: {
         marginTop: theme.spacing(10),
@@ -63,7 +65,7 @@ export default function Product(props) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState(0);
-    const [photos, setPhotos] = useState([]);
+    const [images, setImages] = useState([]);
 
     useEffect(() => {
         fetch("/product/" + params.id, {
@@ -80,7 +82,9 @@ export default function Product(props) {
                 setTitle(productJSON.title);
                 setDescription(productJSON.description);
                 setPrice(productJSON.price);
-                setPhotos(productJSON.photos);
+                productJSON.photos.forEach(photo => {
+                    images.push({"original": photo, "thumbnail": photo});
+                })
             })
     }, []);
 
@@ -92,7 +96,7 @@ export default function Product(props) {
         <Container>
             <Grid className={classes.rootGrid} container spacing={10}>
                 <Grid item xs={6}>
-                    <img className={classes.rootImg} src={photos[1]} />
+                    <ImageGallery lazyLoad items={images} thumbnailPosition="left"/>;
                 </Grid>
                 <Grid item xs={6}>
                     <p>Jeremy Wells</p>
@@ -119,9 +123,9 @@ export default function Product(props) {
                 </AppBar>
                 <TabPanel title={title} description={description} value={value} index={0}>
                 </TabPanel>
-                <TabPanel title={title} description={description} value={value} index={1}>
+                <TabPanel title="" description="" value={value} index={1}>
                 </TabPanel>
-                <TabPanel title={title} description={description} value={value} index={2}>
+                <TabPanel title="" description="" value={value} index={2}>
                 </TabPanel>
             </div>
         </Container>
