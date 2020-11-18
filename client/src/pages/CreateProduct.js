@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     '& > *': {
       margin: theme.spacing(1),
-      width: theme.spacing(16),
+      width: "28%",
       height: theme.spacing(16),
       marginTop: theme.spacing(4),
     },
@@ -31,10 +31,10 @@ const useStyles = makeStyles((theme) => ({
     },
     marginTop: theme.spacing(30),
   },
-  marginTop136: {
+  rootTitle: {
     marginTop: theme.spacing(17),
   },
-  marginTop64: {
+  uploadContainer: {
     marginTop: theme.spacing(8),
   },
   rootSnackbar: {
@@ -86,13 +86,14 @@ export default function CreateProduct() {
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
   const [files, setFiles] = useState([]);
-  
+
   const handlePhotoButton = event => {
-    let filename = event.target.files[0].name.split(".")[0];
-    S3Client.uploadFile(event.target.files[0], filename)
+    const photoFile = event.target.failes[0]
+    const filename = photoFile.name.split(".")[0];
+    S3Client.uploadFile(photoFile, filename)
       .then(data => {
         files.push(data.location);
-       })
+      })
       .catch(err => {
         console.log(err);
       });
@@ -156,29 +157,13 @@ export default function CreateProduct() {
         </div>
         <Grid container spacing={1}>
           <Grid item xs={6}>
-            <h1 className={classes.marginTop136}>Upload new product</h1>
-
+            <h1 className={classes.rootTitle}>Upload new product</h1>
             <div className={classes.rootPaper}>
-              <Paper elevation={3}>
-                <input id="1" type="file" onChange={handlePhotoButton} />
-              </Paper>
-              <Paper elevation={3}>
-                <input id="2" type="file" onChange={handlePhotoButton} />
-              </Paper>
-              <Paper elevation={3}>
-                <input id="3" type="file" onChange={handlePhotoButton} />
-              </Paper>
-            </div>
-            <div className={classes.rootPaper}>
-              <Paper elevation={3}>
-                <input id="4" type="file" onChange={handlePhotoButton} />
-              </Paper>
-              <Paper elevation={3}>
-                <input id="5" type="file" onChange={handlePhotoButton} />
-              </Paper>
-              <Paper elevation={3}>
-                <input id="6" type="file" onChange={handlePhotoButton} />
-              </Paper>
+              {["1", "2", "3", "4", "5", "6"].map(num => (
+                <Paper elevation={3}>
+                  <input id={num} type="file" onChange={handlePhotoButton} />
+                </Paper>
+              ))}
             </div>
           </Grid>
           <Grid item xs={6}>
@@ -220,7 +205,7 @@ export default function CreateProduct() {
             </form>
           </Grid>
         </Grid>
-        <Grid className={classes.marginTop64} container justify="center">
+        <Grid className={classes.uploadContainer} container justify="center">
           <Grid item xs={4}>
             <Button variant="outlined" fullWidth size="large" onClick={submitProduct}>Upload</Button>
           </Grid>
