@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
         height:"700px",
     },
     rootGrid: {
-        marginTop: theme.spacing(10),
+        marginTop: theme.spacing(6),
     },
     root: {
         flexGrow: 1,
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(6),
     },
     rootTab: {
-        padding: "40px",
+        padding: "20px",
     }
 }));
 
