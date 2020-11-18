@@ -14,9 +14,10 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const authContext = useContext(AuthContext);
   const { login } = authContext;
+
   const schema = {
     email: Joi.string().required().email().label("Email"),
-    password: Joi.string().required().min(6).label("Password"),
+    password: Joi.string().required().min(6).label("Password")
   };
 
   const validate = () => {
@@ -35,7 +36,7 @@ const Login = () => {
     const { error } = Joi.validate(obj, schemaObj);
     return error ? error.details[0].message : null;
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const errors = validate();
     setErrors({ errors: errors || {} });
@@ -52,7 +53,7 @@ const Login = () => {
 
     setUser({ ...user, [currentTarget.id]: currentTarget.value });
   };
-  const addFormName = (form_name) => {
+  const addFormName = form_name => {
     return (
       <Grid>
         <Typography
@@ -79,14 +80,14 @@ const Login = () => {
           value={user[id]}
           onChange={handleChange}
           InputLabelProps={{
-            shrink: true,
+            shrink: true
           }}
           variant="outlined"
         />
       </Grid>
     );
   };
-  const showError = (TextField) => {
+  const showError = TextField => {
     return (
       <div>
         <Alert severity="error">{errors[TextField]}</Alert>
@@ -94,7 +95,7 @@ const Login = () => {
     );
   };
 
-  const addButton = (desc) => {
+  const addButton = desc => {
     return (
       <Button
         variant="contained"
