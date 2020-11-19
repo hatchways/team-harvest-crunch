@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Container, Paper, Grid, TextField, InputAdornment, FormControl, InputLabel, OutlinedInput, Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import S3 from "aws-s3";
+import AuthContext from "../context/authContext";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -68,17 +69,8 @@ const typeOfProduct = [
   },
 ];
 
-const config = {
-  bucketName: 'harvestcrunch-bakedgoods',
-  region: 'us-east-2',
-  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY,
-  dirName: '5fac90ecf662c13aa4730775',
-}
-
 export default function CreateProduct() {
   const classes = useStyles();
-  const S3Client = new S3(config);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
@@ -86,10 +78,25 @@ export default function CreateProduct() {
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
   const [files, setFiles] = useState([]);
+  const authContext = useContext(AuthContext);
+  const { loadUser, user } = authContext;
+  let S3Client = new S3();
+
+  useEffect(() => {
+    loadUser(localStorage.getItem("token"));
+  },[]);
 
   const handlePhotoButton = event => {
-    const photoFile = event.target.failes[0]
+    const photoFile = event.target.files[0]
     const filename = photoFile.name.split(".")[0];
+    const config = {
+      bucketName: 'harvestcrunch-bakedgoods',
+      region: 'us-east-2',
+      accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY,
+      dirName: user._id,
+    }
+    S3Client = new S3(config);
     S3Client.uploadFile(photoFile, filename)
       .then(data => {
         files.push(data.location);
@@ -110,7 +117,7 @@ export default function CreateProduct() {
         "description": description,
         "price": amount,
         "productType": productType,
-        "user_id": "5fac90ecf662c13aa4730775",
+        "userId": user._id,
         "photos": files,
       }),
     })
@@ -139,7 +146,6 @@ export default function CreateProduct() {
     setSuccessOpen(false);
     setErrorOpen(false);
   };
-
   return (
     <div>
       <Container>
