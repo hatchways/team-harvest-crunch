@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Button, Container, Paper, Grid, TextField, InputAdornment, FormControl, InputLabel, OutlinedInput, Snackbar } from "@material-ui/core";
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Button,
+  Container,
+  Paper,
+  Grid,
+  TextField,
+  InputAdornment,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  Snackbar,
+} from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import S3 from "aws-s3";
-
 
 const useStyles = makeStyles((theme) => ({
   rootHeader: {
@@ -16,9 +26,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   rootPaper: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    '& > *': {
+    display: "flex",
+    flexWrap: "wrap",
+    "& > *": {
       margin: theme.spacing(1),
       width: "28%",
       height: theme.spacing(16),
@@ -26,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   rootForm: {
-    '& > *': {
+    "& > *": {
       margin: theme.spacing(1),
     },
     marginTop: theme.spacing(30),
@@ -38,8 +48,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(8),
   },
   rootSnackbar: {
-    width: '100%',
-    '& > * + *': {
+    width: "100%",
+    "& > * + *": {
       marginTop: theme.spacing(2),
     },
   },
@@ -47,34 +57,34 @@ const useStyles = makeStyles((theme) => ({
 
 const typeOfProduct = [
   {
-    value: 'Cake',
-    label: 'Cake',
+    value: "Cake",
+    label: "Cake",
   },
   {
-    value: 'Cupcake',
-    label: 'Cupcake',
+    value: "Cupcake",
+    label: "Cupcake",
   },
   {
-    value: 'Macarons',
-    label: 'Macarons',
+    value: "Macarons",
+    label: "Macarons",
   },
   {
-    value: 'Cookies',
-    label: 'Cookies',
+    value: "Cookies",
+    label: "Cookies",
   },
   {
-    value: 'Confections',
-    label: 'Confections',
+    value: "Confections",
+    label: "Confections",
   },
 ];
 
 const config = {
-  bucketName: 'harvestcrunch-bakedgoods',
-  region: 'us-east-2',
+  bucketName: "harvestcrunch-bakedgoods",
+  region: "us-east-2",
   accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY,
-  dirName: '5fac90ecf662c13aa4730775',
-}
+  dirName: "5fac90ecf662c13aa4730775",
+};
 
 export default function CreateProduct() {
   const classes = useStyles();
@@ -87,17 +97,17 @@ export default function CreateProduct() {
   const [errorOpen, setErrorOpen] = useState(false);
   const [files, setFiles] = useState([]);
 
-  const handlePhotoButton = event => {
-    const photoFile = event.target.failes[0]
+  const handlePhotoButton = (event) => {
+    const photoFile = event.target.files[0];
     const filename = photoFile.name.split(".")[0];
     S3Client.uploadFile(photoFile, filename)
-      .then(data => {
+      .then((data) => {
         files.push(data.location);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
   const submitProduct = () => {
     fetch("/product", {
@@ -106,33 +116,32 @@ export default function CreateProduct() {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        "title": title,
-        "description": description,
-        "price": amount,
-        "productType": productType,
-        "user_id": "5fac90ecf662c13aa4730775",
-        "photos": files,
+        title: title,
+        description: description,
+        price: amount,
+        productType: productType,
+        user_id: "5fac90ecf662c13aa4730775",
+        photos: files,
       }),
     })
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           setSuccessOpen(true);
         } else if (res.status === 400) {
           setErrorOpen(true);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err.message);
       });
-
-  }
+  };
 
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -144,12 +153,20 @@ export default function CreateProduct() {
     <div>
       <Container>
         <div className={classes.rootSnackbar}>
-          <Snackbar open={successOpen} autoHideDuration={6000} onClose={handleClose}>
+          <Snackbar
+            open={successOpen}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
             <Alert onClose={handleClose} severity="success">
               Product Created!
             </Alert>
           </Snackbar>
-          <Snackbar open={errorOpen} autoHideDuration={6000} onClose={handleClose}>
+          <Snackbar
+            open={errorOpen}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
             <Alert onClose={handleClose} severity="error">
               Product Already Exists!
             </Alert>
@@ -159,7 +176,7 @@ export default function CreateProduct() {
           <Grid item xs={6}>
             <h1 className={classes.rootTitle}>Upload new product</h1>
             <div className={classes.rootPaper}>
-              {["1", "2", "3", "4", "5", "6"].map(num => (
+              {["1", "2", "3", "4", "5", "6"].map((num) => (
                 <Paper elevation={3}>
                   <input id={num} type="file" onChange={handlePhotoButton} />
                 </Paper>
@@ -168,17 +185,35 @@ export default function CreateProduct() {
           </Grid>
           <Grid item xs={6}>
             <form className={classes.rootForm}>
-              <TextField id="outlined-basic" label="Title" variant="outlined" fullWidth onChange={e => setTitle(e.target.value)} />
-              <TextField id="outlined-basic" label="Description" variant="outlined" fullWidth rows={4} multiline onChange={e => setDescription(e.target.value)} />
+              <TextField
+                id="outlined-basic"
+                label="Title"
+                variant="outlined"
+                fullWidth
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <TextField
+                id="outlined-basic"
+                label="Description"
+                variant="outlined"
+                fullWidth
+                rows={4}
+                multiline
+                onChange={(e) => setDescription(e.target.value)}
+              />
               <Grid container spacing={1}>
                 <Grid item xs={3}>
                   <FormControl variant="outlined" fullWidth>
-                    <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
+                    <InputLabel htmlFor="outlined-adornment-amount">
+                      Amount
+                    </InputLabel>
                     <OutlinedInput
                       id="outlined-adornment-amount"
                       label="Amount"
-                      startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                      onChange={e => setAmount(e.target.value)}
+                      startAdornment={
+                        <InputAdornment position="start">$</InputAdornment>
+                      }
+                      onChange={(e) => setAmount(e.target.value)}
                     />
                   </FormControl>
                 </Grid>
@@ -192,7 +227,7 @@ export default function CreateProduct() {
                       native: true,
                     }}
                     variant="outlined"
-                    onChange={e => setProductType(e.target.value)}
+                    onChange={(e) => setProductType(e.target.value)}
                   >
                     {typeOfProduct.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -207,7 +242,14 @@ export default function CreateProduct() {
         </Grid>
         <Grid className={classes.uploadContainer} container justify="center">
           <Grid item xs={4}>
-            <Button variant="outlined" fullWidth size="large" onClick={submitProduct}>Upload</Button>
+            <Button
+              variant="outlined"
+              fullWidth
+              size="large"
+              onClick={submitProduct}
+            >
+              Upload
+            </Button>
           </Grid>
         </Grid>
       </Container>

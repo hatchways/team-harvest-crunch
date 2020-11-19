@@ -14,6 +14,7 @@ import Home from "./pages/Home";
 import AuthState from "./context/authState";
 
 import "./App.css";
+import PersonalShop from "./pages/PersonalShop";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           {/* <Route path="/" component={LandingPage} /> */}
           <Route path="/S3Test" component={S3Test} />
           <Route path="/create-product/" component={CreateProduct} />
+          <Route path="/personal-shop" component={PersonalShop} />
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
           <PrivateRoute exact path="/" component={Home} />
