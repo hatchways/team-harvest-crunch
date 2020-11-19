@@ -84,6 +84,7 @@ export default function CreateProduct() {
 
   useEffect(() => {
     loadUser(localStorage.getItem("token"));
+    
   },[]);
 
   const handlePhotoButton = event => {
@@ -117,7 +118,7 @@ export default function CreateProduct() {
         "description": description,
         "price": amount,
         "productType": productType,
-        "userId": user._id,
+        "user_id": user._id,
         "photos": files,
       }),
     })
