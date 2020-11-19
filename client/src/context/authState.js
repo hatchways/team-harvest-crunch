@@ -1,11 +1,11 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 import axios from "axios";
 import AuthContext from "./authContext";
 import authReducer from "./authReducer";
 
 const AuthState = props => {
   const initialState = {
-    user: null,
+    user: { _id: "", name: "", email: "", date: "", __v: 0 },
     isAuthenticated: false
   };
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -74,6 +74,10 @@ const AuthState = props => {
       }
     }
   };
+
+  useEffect(() => {
+    loadUser(localStorage.getItem("token"));
+  },[]);
 
   return (
     <AuthContext.Provider

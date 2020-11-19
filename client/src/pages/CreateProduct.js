@@ -78,26 +78,28 @@ export default function CreateProduct() {
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
   const [files, setFiles] = useState([]);
+  const[isUserLoaded, setIsUserLoaded] = useState(false);
   const authContext = useContext(AuthContext);
-  const { loadUser, user } = authContext;
+  const { user } = authContext;
   let S3Client = new S3();
+  let config = {
+    bucketName: 'harvestcrunch-bakedgoods',
+    region: 'us-east-2',
+    accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY,
+    dirName: user._id,
+  }
 
   useEffect(() => {
-    loadUser(localStorage.getItem("token"));
-    
-  },[]);
+    config.dirName = user._id;
+    S3Client = new S3(config);
+    setIsUserLoaded(true);
+  },[user]);
 
   const handlePhotoButton = event => {
     const photoFile = event.target.files[0]
     const filename = photoFile.name.split(".")[0];
-    const config = {
-      bucketName: 'harvestcrunch-bakedgoods',
-      region: 'us-east-2',
-      accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY,
-      dirName: user._id,
-    }
-    S3Client = new S3(config);
+    console.log(user)
     S3Client.uploadFile(photoFile, filename)
       .then(data => {
         files.push(data.location);
@@ -168,7 +170,7 @@ export default function CreateProduct() {
             <div className={classes.rootPaper}>
               {["1", "2", "3", "4", "5", "6"].map(num => (
                 <Paper elevation={3}>
-                  <input id={num} type="file" onChange={handlePhotoButton} />
+                  <input id={num} type="file" onChange={handlePhotoButton} disabled={!isUserLoaded}/>
                 </Paper>
               ))}
             </div>
@@ -214,7 +216,7 @@ export default function CreateProduct() {
         </Grid>
         <Grid className={classes.uploadContainer} container justify="center">
           <Grid item xs={4}>
-            <Button variant="outlined" fullWidth size="large" onClick={submitProduct}>Upload</Button>
+            <Button variant="outlined" fullWidth size="large" onClick={submitProduct} disabled={!isUserLoaded}>Upload</Button>
           </Grid>
         </Grid>
       </Container>
