@@ -82,9 +82,11 @@ export default function Product(props) {
                 setTitle(productJSON.title);
                 setDescription(productJSON.description);
                 setPrice(productJSON.price);
-                productJSON.photos.forEach(photo => {
-                    images.push({"original": photo, "thumbnail": photo});
-                })
+                setImages(productJSON.photos.map(photo => {
+                    return {
+                    "original": photo,
+                    "thumbnail": photo}
+                }));
             })
     }, []);
 
