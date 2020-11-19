@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -7,10 +7,14 @@ import { Paper } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
 import Joi from "joi-browser";
+import AuthContext from "../context/authContext";
 
 const Register = () => {
   const [user, setUser] = useState({ name: "", email: "", password: "" });
   const [errors, setErrors] = useState({});
+  const authContext = useContext(AuthContext);
+  const { register } = authContext;
+
   const schema = {
     name: Joi.string().required().label("Name"),
     email: Joi.string().required().email().label("Email"),
@@ -33,12 +37,14 @@ const Register = () => {
     const { error } = Joi.validate(obj, schemaObj);
     return error ? error.details[0].message : null;
   };
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validate();
     setErrors({ errors: errors || {} });
     if (errors) return;
-    setUser({ name: "", email: "", password: "" });
+    const backendErr = await register(user);
+    backendErr && setErrors(backendErr);
   };
   const handleChange = ({ currentTarget }) => {
     const newErrors = { ...errors };
@@ -109,8 +115,9 @@ const Register = () => {
     <Container component="main" maxWidth="sm">
       <Paper elevation={3}>
         {addFormName("Sign up")}
-        <form method="get" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <Grid container alignItems="center" direction="column" spacing={1}>
+            {errors["backendErr"] && showError("backendErr")}
             {addInputField("name", "First name", "Please enter first name")}
             {errors["name"] && showError("name")}
 

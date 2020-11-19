@@ -10,20 +10,26 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import NavBar from "./pages/NavBar";
 import Product from "./pages/Product";
+import PrivateRoute from "./pages/PrivateRoute";
+import Home from "./pages/Home";
+import AuthState from "./context/authState";
 import "./App.css";
 
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <NavBar />
-      <BrowserRouter>
-        {/* <Route path="/" component={LandingPage} /> */}
-        <Route path="/S3Test" component={S3Test} />
-        <Route path="/product/:id" component={Product} />
-        <Route path="/create-product/" component={CreateProduct} />
-        <Route path="/register" component={Register} />
-        <Route path="/login" component={Login} />
-      </BrowserRouter>
+      <AuthState>
+        <NavBar />
+        <BrowserRouter>
+          {/* <Route path="/" component={LandingPage} /> */}
+          <Route path="/S3Test" component={S3Test} />
+          <Route path="/product/:id" component={Product} />
+          <Route path="/create-product/" component={CreateProduct} />
+          <Route path="/register" component={Register} />
+          <Route path="/login" component={Login} />
+          <PrivateRoute exact path="/" component={Home} />
+        </BrowserRouter>
+      </AuthState>
     </MuiThemeProvider>
   );
 }
