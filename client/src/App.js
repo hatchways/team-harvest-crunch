@@ -13,6 +13,7 @@ import Product from "./pages/Product";
 import PrivateRoute from "./pages/PrivateRoute";
 import Home from "./pages/Home";
 import AuthState from "./context/authState";
+import StripeTest from "./pages/StripeTest";
 import "./App.css";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/create-product/" component={CreateProduct} />
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
+          <Route path="/stripe-test" component={StripeTest}/>
           <PrivateRoute exact path="/" component={Home} />
         </BrowserRouter>
       </AuthState>
