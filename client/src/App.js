@@ -11,28 +11,39 @@ import Login from "./pages/Login";
 import NavBar from "./pages/NavBar";
 import PrivateRoute from "./pages/PrivateRoute";
 import Home from "./pages/Home";
+import PersonalShop from "./pages/PersonalShop";
 import AuthState from "./context/authState";
+import ProductState from "./context/productState";
+import Product from "./pages/Product";
 
 import "./App.css";
-import PersonalShop from "./pages/PersonalShop";
 
 function App() {
-  return (
-    <MuiThemeProvider theme={theme}>
-      <AuthState>
-        <NavBar />
-        <BrowserRouter>
-          {/* <Route path="/" component={LandingPage} /> */}
-          <Route path="/S3Test" component={S3Test} />
-          <Route path="/create-product/" component={CreateProduct} />
-          <Route path="/personal-shop" component={PersonalShop} />
-          <Route path="/register" component={Register} />
-          <Route path="/login" component={Login} />
-          <PrivateRoute exact path="/" component={Home} />
-        </BrowserRouter>
-      </AuthState>
-    </MuiThemeProvider>
-  );
+    return (
+        <MuiThemeProvider theme={theme}>
+            <AuthState>
+                <ProductState>
+                    <NavBar />
+                    <BrowserRouter>
+                        {/* <Route path="/" component={LandingPage} /> */}
+                        <Route path="/S3Test" component={S3Test} />
+                        <Route path="/product/:id" component={Product} />
+                        <PrivateRoute
+                            path="/create-product/"
+                            component={CreateProduct}
+                        />
+                        <PrivateRoute
+                            path="/personal-shop"
+                            component={PersonalShop}
+                        />
+                        <Route path="/register" component={Register} />
+                        <Route path="/login" component={Login} />
+                        <PrivateRoute exact path="/" component={Home} />
+                    </BrowserRouter>
+                </ProductState>
+            </AuthState>
+        </MuiThemeProvider>
+    );
 }
 
 export default App;
