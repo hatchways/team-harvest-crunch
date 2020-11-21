@@ -88,7 +88,7 @@ export default function CreateProduct() {
   const [files, setFiles] = useState([]);
 
   const handlePhotoButton = event => {
-    const photoFile = event.target.failes[0]
+    const photoFile = event.target.files[0]
     const filename = photoFile.name.split(".")[0];
     S3Client.uploadFile(photoFile, filename)
       .then(data => {
