@@ -7,6 +7,12 @@ export default (state, action) => {
                 user: action.payload,
                 loading: false
             };
+        case "LOAD_USER_FAIL":
+            return {
+                ...state,
+                isAuthenticated: false,
+                loading: false
+            };
         case "REGISTER_USER":
         case "LOGIN_USER":
             return {

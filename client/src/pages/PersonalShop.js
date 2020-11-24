@@ -5,9 +5,9 @@ import {
     Typography,
     AppBar,
     Card,
+    CardMedia,
     Button,
     CardContent,
-    CardActions,
     CardActionArea
 } from "@material-ui/core";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
@@ -101,18 +101,11 @@ const PersonalShop = props => {
                     </Card>
                 </Grid>
                 <Grid item xs={7}>
-                    <Card
-                        elevation={3}
-                        className={classes.coverPhoto}
-                        style={{
-                            backgroundImage: `url(${user.shopCoverPic})`
-                        }}
-                    >
-                        <div style={{ textAlign: "left" }}>
-                            <Button variant="outlined" color="secondary">
-                                EDIT COVER
-                            </Button>
-                        </div>
+                    <Card elevation={3}>
+                        <CardMedia
+                            className={classes.coverPhoto}
+                            image={user.shopCoverPic}
+                        />
                     </Card>
                 </Grid>
             </Grid>

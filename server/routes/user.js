@@ -7,8 +7,8 @@ const { body, validationResult } = require("express-validator");
 const User = require("../models/User");
 const auth = require("../middleware/auth");
 
-// @route     POST api/users
-// @desc      Regiter a user
+// @route     POST user/register
+// @desc      Register a user & get token
 // @access    Public
 router.post(
     "/register",
@@ -72,7 +72,7 @@ router.post(
     }
 );
 
-// @route     GET api/auth
+// @route     GET user/login
 // @desc      Get logged in user
 // @access    Private
 router.get("/login", auth, async (req, res) => {
@@ -85,7 +85,7 @@ router.get("/login", auth, async (req, res) => {
     }
 });
 
-// @route     POST api/auth
+// @route     POST user/login
 // @desc      Auth user & get token
 // @access    Public
 router.post(
@@ -139,7 +139,7 @@ router.post(
     }
 );
 
-// @route     POST api/users
+// @route     PUT user/shop
 // @desc      Update a Shopinfo
 // @access    Private
 router.put(
