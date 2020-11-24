@@ -71,7 +71,7 @@ export default function MyAccount() {
     const [file, setFile] = useState({});
     const [isUserLoaded, setIsUserLoaded] = useState(false);
     const authContext = useContext(AuthContext);
-    const { user } = authContext;
+    const { user, loadUser } = authContext;
     let s3fileURL = null;
     let config = {
         s3: {
@@ -97,7 +97,7 @@ export default function MyAccount() {
     }, [user._id]);
 
     const submitUpdate = async () => {
-        if (Object.keys(file).length > 0 && file.constructor === Object) {
+        if (Object.keys(file).length > 0) {
             const filename = file.name.split(".")[0];
             try {
                 const data = await S3Client.uploadFile(file, filename);
@@ -114,6 +114,7 @@ export default function MyAccount() {
                 { shopName, shopDescription, shopCoverPic: s3fileURL || URL },
                 config.headers
             );
+            loadUser(localStorage.getItem("token"));
             setSuccessOpen(true);
         } catch (err) {
             if (err.response && err.response.status === 400) {

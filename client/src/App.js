@@ -16,7 +16,6 @@ import Home from "./pages/Home";
 import PersonalShop from "./pages/PersonalShop";
 import AuthState from "./context/authState";
 import ProductState from "./context/productState";
-import Product from "./pages/Product";
 
 import "./App.css";
 
