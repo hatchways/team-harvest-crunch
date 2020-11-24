@@ -4,94 +4,100 @@ import AuthContext from "./authContext";
 import authReducer from "./authReducer";
 
 const AuthState = props => {
-  const initialState = {
-    user: { _id: "", name: "", email: "", date: "", __v: 0 },
-    isAuthenticated: false
-  };
-  const [state, dispatch] = useReducer(authReducer, initialState);
-  const config = {
-    headers: {
-      "Content-Type": "application/json"
-    },
-    jwt_key: "token"
-  };
+    const initialState = {
+        user: { _id: "", name: "", email: "", date: "", __v: 0 },
+        isAuthenticated: false,
+        loading: true
+    };
+    const [state, dispatch] = useReducer(authReducer, initialState);
+    const config = {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        jwt_key: "token"
+    };
 
-  const register = async formData => {
-    try {
-      const res = await axios.post(
-        "http://localhost:3001/user/register",
-        formData,
-        config.headers
-      );
+    const register = async formData => {
+        try {
+            const res = await axios.post(
+                "http://localhost:3001/user/register",
+                formData,
+                config.headers
+            );
 
-      localStorage.setItem(config.jwt_key, res.data.token);
+            localStorage.setItem(config.jwt_key, res.data.token);
 
-      dispatch({
-        type: "REGISTER_USER",
-        payload: res.data
-      });
+            dispatch({
+                type: "REGISTER_USER",
+                payload: res.data
+            });
 
-      loadUser(res.data.token);
-    } catch (err) {
-      if (err.response && err.response.status === 400) {
-        return { backendErr: err.response.data.msg };
-      }
-    }
-  };
+            loadUser(res.data.token);
+        } catch (err) {
+            if (err.response && err.response.status === 400) {
+                return { backendErr: err.response.data.msg };
+            }
+        }
+    };
 
-  const loadUser = async token => {
-    if (token) {
-      axios.defaults.headers.common["x-auth-token"] = token;
-    } else delete axios.defaults.headers.common["x-auth-token"];
-    try {
-      const res = await axios.get("http://localhost:3001/user/login");
-      dispatch({
-        type: "LOAD_USER",
-        payload: res.data
-      });
-    } catch (err) {}
-  };
+    const loadUser = async token => {
+        if (token) {
+            axios.defaults.headers.common["x-auth-token"] = token;
+        } else delete axios.defaults.headers.common["x-auth-token"];
+        try {
+            const res = await axios.get("http://localhost:3001/user/login");
+            dispatch({
+                type: "LOAD_USER",
+                payload: res.data
+            });
+        } catch (err) {
+            dispatch({
+                type: "LOAD_USER_FAIL"
+            });
+        }
+    };
 
-  const login = async formData => {
-    try {
-      const res = await axios.post(
-        "http://localhost:3001/user/login",
-        formData,
-        config.headers
-      );
+    const login = async formData => {
+        try {
+            const res = await axios.post(
+                "http://localhost:3001/user/login",
+                formData,
+                config.headers
+            );
 
-      localStorage.setItem(config.jwt_key, res.data.token);
+            localStorage.setItem(config.jwt_key, res.data.token);
 
-      dispatch({
-        type: "LOGIN_USER",
-        payload: res.data
-      });
+            dispatch({
+                type: "LOGIN_USER",
+                payload: res.data
+            });
 
-      loadUser(res.data.token);
-    } catch (err) {
-      if (err.response && err.response.status === 400) {
-        return { backendErr: err.response.data.msg };
-      }
-    }
-  };
+            loadUser(res.data.token);
+        } catch (err) {
+            if (err.response && err.response.status === 400) {
+                return { backendErr: err.response.data.msg };
+            }
+        }
+    };
 
-  useEffect(() => {
-    loadUser(localStorage.getItem("token"));
-  },[]);
+    useEffect(() => {
+        loadUser(localStorage.getItem("token"));
+    }, []);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user: state.user,
-        isAuthenticated: state.isAuthenticated,
-        register,
-        loadUser,
-        login
-      }}
-    >
-      {props.children}
-    </AuthContext.Provider>
-  );
+    return (
+        <AuthContext.Provider
+            value={{
+                user: state.user,
+                isAuthenticated: state.isAuthenticated,
+                loading: state.loading,
+                register,
+                loadUser,
+                login
+            }}
+        >
+            {props.children}
+        </AuthContext.Provider>
+    );
 };
 
 export default AuthState;
