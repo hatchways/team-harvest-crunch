@@ -10,6 +10,7 @@ import MyAccount from "./pages/MyAccount";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import NavBar from "./pages/NavBar";
+import Product from "./pages/Product";
 import PrivateRoute from "./pages/PrivateRoute";
 import Home from "./pages/Home";
 import PersonalShop from "./pages/PersonalShop";

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -12,6 +13,11 @@ import {
     OutlinedInput,
     Snackbar
 } from "@material-ui/core";
+=======
+import React, { useState, useContext, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { Button, Container, Paper, Grid, TextField, InputAdornment, FormControl, InputLabel, OutlinedInput, Snackbar } from "@material-ui/core";
+>>>>>>> 18b02a0630920725907afb07b586d8446cd7f999
 import MuiAlert from "@material-ui/lab/Alert";
 import S3 from "aws-s3";
 import AuthContext from "../context/authContext";
@@ -149,6 +155,7 @@ export default function CreateProduct() {
         return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
 
+<<<<<<< HEAD
     const handleClose = (event, reason) => {
         if (reason === "clickaway") {
             return;
@@ -263,6 +270,52 @@ export default function CreateProduct() {
                             </Grid>
                         </form>
                     </Grid>
+=======
+    setSuccessOpen(false);
+    setErrorOpen(false);
+  };
+  return (
+    <div>
+      <Container>
+        <div className={classes.rootSnackbar}>
+          <Snackbar open={successOpen} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success">
+              Product Created!
+            </Alert>
+          </Snackbar>
+          <Snackbar open={errorOpen} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="error">
+              Product Already Exists!
+            </Alert>
+          </Snackbar>
+        </div>
+        <Grid container spacing={1}>
+          <Grid item xs={6}>
+            <h1 className={classes.rootTitle}>Upload new product</h1>
+            <div className={classes.rootPaper}>
+              {["1", "2", "3", "4", "5", "6"].map(num => (
+                <Paper elevation={3}>
+                  <input id={num} type="file" onChange={handlePhotoButton} disabled={!isUserLoaded}/>
+                </Paper>
+              ))}
+            </div>
+          </Grid>
+          <Grid item xs={6}>
+            <form className={classes.rootForm}>
+              <TextField id="outlined-basic" label="Title" variant="outlined" fullWidth onChange={e => setTitle(e.target.value)} />
+              <TextField id="outlined-basic" label="Description" variant="outlined" fullWidth rows={4} multiline onChange={e => setDescription(e.target.value)} />
+              <Grid container spacing={1}>
+                <Grid item xs={3}>
+                  <FormControl variant="outlined" fullWidth>
+                    <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-amount"
+                      label="Amount"
+                      startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                      onChange={e => setAmount(e.target.value)}
+                    />
+                  </FormControl>
+>>>>>>> 18b02a0630920725907afb07b586d8446cd7f999
                 </Grid>
                 <Grid
                     className={classes.uploadContainer}
@@ -281,7 +334,23 @@ export default function CreateProduct() {
                         </Button>
                     </Grid>
                 </Grid>
+<<<<<<< HEAD
             </Container>
         </div>
     );
 }
+=======
+              </Grid>
+            </form>
+          </Grid>
+        </Grid>
+        <Grid className={classes.uploadContainer} container justify="center">
+          <Grid item xs={4}>
+            <Button variant="outlined" fullWidth size="large" onClick={submitProduct} disabled={!isUserLoaded}>Upload</Button>
+          </Grid>
+        </Grid>
+      </Container>
+    </div>
+  );
+}
+>>>>>>> 18b02a0630920725907afb07b586d8446cd7f999
