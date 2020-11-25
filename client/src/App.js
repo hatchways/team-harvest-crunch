@@ -15,6 +15,8 @@ import PrivateRoute from "./pages/PrivateRoute";
 import Home from "./pages/Home";
 import PersonalShop from "./pages/PersonalShop";
 import AuthState from "./context/authState";
+import StripeTest from "./pages/StripeTest";
+import "./App.css";
 import ProductState from "./context/productState";
 
 import "./App.css";
@@ -28,6 +30,7 @@ function App() {
                         <NavBar />
                         {/* <Route path="/" component={LandingPage} /> */}
                         <Route path="/S3Test" component={S3Test} />
+                        <Route path="/stripe-test" component={StripeTest}/>
                         <Route path="/product/:id" component={Product} />
                         <PrivateRoute
                             path="/create-product/"
