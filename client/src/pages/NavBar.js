@@ -42,7 +42,9 @@ export default function Navbar() {
                     <Typography variant="h6" className={classes.title}>
                         HARVEST CRUNCH BAKERY
                     </Typography>
-                    <Button color="inherit">SHOP</Button>
+                    <Link to="/">
+                        <Button className={classes.color}>SHOP</Button>
+                    </Link>
                     <Button color="inherit">MESSAGES</Button>
                     <Button color="inherit">MY FAVOURITES</Button>
                     <Link to="/personal-shop">

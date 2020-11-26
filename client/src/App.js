@@ -43,7 +43,7 @@ function App() {
                         />
                         <Route path="/register" component={Register} />
                         <Route path="/login" component={Login} />
-                        <PrivateRoute exact path="/" component={Home} />
+                        <Route exact path="/" component={Home} />
                     </BrowserRouter>
                 </ProductState>
             </AuthState>

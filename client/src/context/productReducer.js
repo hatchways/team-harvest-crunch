@@ -6,6 +6,12 @@ export default (state, action) => {
                 products: action.payload,
                 loading: false
             };
+        case "LOAD_ALL_PRODUCT":
+            return {
+                ...state,
+                allProducts: action.payload,
+                loading: false
+            };
         default:
             return state;
     }

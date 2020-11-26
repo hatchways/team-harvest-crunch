@@ -5,6 +5,7 @@ import productReducer from "./productReducer";
 
 const ProductState = props => {
     const initialState = {
+        allProducts: [],
         products: [],
         loading: true
     };
@@ -26,12 +27,32 @@ const ProductState = props => {
         } catch (err) {}
     };
 
+    const loadAllProducts = async filterObj => {
+        if (localStorage.getItem("token")) {
+            axios.defaults.headers.common[
+                "x-auth-token"
+            ] = localStorage.getItem("token");
+        } else delete axios.defaults.headers.common["x-auth-token"];
+        try {
+            const query = `http://localhost:3001/product/pagination/products`;
+            const res = await axios.post(query, filterObj);
+
+            dispatch({
+                type: "LOAD_ALL_PRODUCT",
+                payload: res.data.products
+            });
+            return res.data;
+        } catch (err) {}
+    };
+
     return (
         <ProductContext.Provider
             value={{
+                allProducts: state.allProducts,
                 products: state.products,
                 loading: state.loading,
-                loadProducts
+                loadProducts,
+                loadAllProducts
             }}
         >
             {props.children}
