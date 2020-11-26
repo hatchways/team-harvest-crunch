@@ -19,6 +19,7 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { makeStyles } from "@material-ui/core/styles";
 import Pagination from "@material-ui/lab/Pagination";
 import ProductContext from "../context/productContext";
+import Loading from "./Loading";
 
 const useStyles = makeStyles(theme => ({
     rightTopGrid: {
@@ -51,7 +52,7 @@ const limit = 20;
 
 const Home = props => {
     const productContext = useContext(ProductContext);
-    const { loadAllProducts } = productContext;
+    const { loadAllProducts, loading } = productContext;
     const [products, setProducts] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
     const [state, setState] = React.useState({
@@ -85,12 +86,12 @@ const Home = props => {
     const handleChange = async (e, value) => {
         //filterObj-example {limit:20, filters: {productType:[],price:[]}}
         const { productType, price } = { ...state };
+        let newPrice = [];
         if (typeof value === "boolean") {
             value
                 ? productType.push(e.target.name)
                 : productType.splice(productType.indexOf(e.target.name), 1);
 
-            var newPrice = [];
             price.length > 0 &&
                 price[0].split(",").map(str => newPrice.push(parseInt(str)));
             setState({
@@ -99,7 +100,6 @@ const Home = props => {
                 ["search"]: ""
             });
         } else {
-            var newPrice = [];
             value.split(",").map(str => newPrice.push(parseInt(str)));
             setState({ ...state, [e.target.name]: [value], ["search"]: "" });
         }
@@ -223,6 +223,7 @@ const Home = props => {
                         alignItems="center"
                         spacing={3}
                     >
+                        {loading && <Loading />}
                         {products.map(p => (
                             <Grid key={p._id} item xs={4}>
                                 <Card
@@ -256,7 +257,8 @@ const Home = props => {
                                 </Card>
                             </Grid>
                         ))}
-                        {products.length === 0 ? (
+
+                        {!loading && products.length === 0 ? (
                             <Grid
                                 container
                                 justify="center"

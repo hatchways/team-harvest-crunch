@@ -6,11 +6,11 @@ const mongoose = require("mongoose");
 const User = require("../models/User");
 const Product = require("../models/Product");
 
-// @route     POST api/product
+// @route     POST /product
 // @desc      Register a product
 // @access    Public
 router.post(
-    "/",
+    "/product",
     [
         body("title", "Please add title").not().isEmpty(),
         body("price", "Please enter price").not().isEmpty(),
@@ -67,10 +67,10 @@ router.post(
     }
 );
 
-// @route     POST api/product/:id
+// @route     POST /product/:id
 // @desc      Update a product's information
 // @access    Public
-router.post("/:id", async (req, res) => {
+router.post("/product/:id", async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -127,10 +127,10 @@ router.post("/:id", async (req, res) => {
     }
 });
 
-// @route     GET api/product/:id
+// @route     GET /product/:id
 // @desc      Get product information
 // @access    Public
-router.get("/:id", async (req, res) => {
+router.get("/product/:id", async (req, res) => {
     try {
         let id = req.params.id;
 
@@ -150,10 +150,11 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-// @route     GET api/product/:shop_id/products
+// @route     GET /product/:shop_id/products
 // @desc      Get all products for shop
 // @access    Public
-router.get("/:shop_id/products", async (req, res) => {
+router.get("/product/:shop_id/products", async (req, res) => {
+    console.log(req.header("x-auth-token"));
     try {
         let id = req.params.shop_id;
 
@@ -169,13 +170,13 @@ router.get("/:shop_id/products", async (req, res) => {
     }
 });
 
-// @route     POST product/pagination/products
+// @route     POST/products
 // @desc      Get specific page products based on client search
 // @access    Public
-router.post("/pagination/products", async (req, res) => {
-    let limit = req.body.limit ? parseInt(req.body.limit) : 20;
-    let page = req.body.page ? parseInt(req.body.page) : 1;
-    let search = req.body.search;
+router.post("/products", async (req, res) => {
+    let { limit, page, filters, search } = req.body;
+    limit = limit ? parseInt(limit) : 20;
+    page = page ? parseInt(page) : 1;
     const startIndex = (page - 1) * limit;
     let findArgs = {};
     if (search) {
@@ -183,15 +184,15 @@ router.post("/pagination/products", async (req, res) => {
     }
     // req.body = {page:1, filters: {productType:[],price:[]}, search:""}
 
-    for (let key in req.body.filters) {
-        if (req.body.filters[key].length > 0) {
+    for (let key in filters) {
+        if (filters[key].length > 0) {
             if (key === "price") {
                 findArgs[key] = {
-                    $gte: req.body.filters[key][0],
-                    $lte: req.body.filters[key][1]
+                    $gte: filters[key][0],
+                    $lte: filters[key][1]
                 };
             } else {
-                findArgs[key] = req.body.filters[key];
+                findArgs[key] = filters[key];
             }
         }
     }

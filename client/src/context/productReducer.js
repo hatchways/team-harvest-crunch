@@ -9,7 +9,6 @@ export default (state, action) => {
         case "LOAD_ALL_PRODUCT":
             return {
                 ...state,
-                allProducts: action.payload,
                 loading: false
             };
         default:
