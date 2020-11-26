@@ -4,6 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
+import { loadStripe } from "@stripe/stripe-js";
+import AuthContext from "../context/authContext";
+import MuiAlert from "@material-ui/lab/Alert";
 
 function TabPanel(props) {
     const { title, description, value, index, ...other } = props;

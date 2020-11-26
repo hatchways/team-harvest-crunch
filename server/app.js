@@ -10,6 +10,7 @@ const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
 const userRouter = require("./routes/user");
 const productRouter = require("./routes/product");
+const paymentRouter = require("./routes/payment");
 
 const { json, urlencoded } = express;
 
