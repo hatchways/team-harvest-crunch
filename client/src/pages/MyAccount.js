@@ -15,6 +15,7 @@ import {
 import MuiAlert from "@material-ui/lab/Alert";
 import S3 from "aws-s3";
 import AuthContext from "../context/authContext";
+import Navbar from "./NavBar";
 
 const useStyles = makeStyles(theme => ({
     rootHeader: {
@@ -154,6 +155,7 @@ export default function MyAccount() {
 
     return (
         <div>
+            <Navbar />
             <Container>
                 <div className={classes.rootSnackbar}>
                     <Snackbar
