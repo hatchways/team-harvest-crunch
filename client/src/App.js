@@ -4,7 +4,6 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 import { theme } from "./themes/theme";
 import LandingPage from "./pages/Landing";
-import S3Test from "./pages/S3Test";
 import CreateProduct from "./pages/CreateProduct";
 import MyAccount from "./pages/MyAccount";
 import Register from "./pages/Register";
@@ -29,7 +28,6 @@ function App() {
                     <BrowserRouter>
                         <NavBar />
                         {/* <Route path="/" component={LandingPage} /> */}
-                        <Route path="/S3Test" component={S3Test} />
                         <Route path="/stripe-test" component={StripeTest}/>
                         <Route path="/product/:id" component={Product} />
                         <PrivateRoute
