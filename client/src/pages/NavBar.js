@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -9,6 +9,7 @@ import {
     Button
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+import AuthContext from "../context/authContext";
 
 const useStyles = makeStyles(theme => ({
     rootHeader: {
@@ -27,6 +28,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function Navbar() {
     const classes = useStyles();
+    const authContext = useContext(AuthContext);
+    const { logout } = authContext;
+
+    function handleLogout() {
+        logout();
+    }
+
     return (
         <div className={classes.rootHeader}>
             <AppBar position="static">
@@ -51,6 +59,7 @@ export default function Navbar() {
                     <Link to="/shop-profile">
                         <Button className={classes.color}>MY ACCOUNT</Button>
                     </Link>
+                    <Button color="inherit" onClick={handleLogout}>LOGOUT</Button>
                 </Toolbar>
             </AppBar>
         </div>
