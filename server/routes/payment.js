@@ -27,6 +27,8 @@ router.post(
 
       const user = await User.findById(user_id);
 
+      const seller = await User.findById(product.userId);
+
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: [
@@ -37,12 +39,11 @@ router.post(
             quantity: 1,
           },
         ],
-        //   payment_intent_data: {
-        //     application_fee_amount: 0,
-        //     transfer_data: {
-        //       destination: "acct_1HqpwNPL3lnSgRx7",
-        //     },
-        //   },
+          payment_intent_data: {
+            transfer_data: {
+              destination: seller.stripeAccountId,
+            },
+          },
         success_url: "http://127.0.0.1:3000/product/" + product_id,
         cancel_url: "http://127.0.0.1:3000/product/" + product_id,
       });
@@ -74,6 +75,34 @@ router.post("/webhook", async (req, res) => {
     await payment.save();
 
     res.send("Purchase Complete");
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
+
+router.post("/create-stripe-account/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    let user = await User.findById(id);
+    const account = await stripe.accounts.create({
+      type: "custom",
+      capabilities: {
+        card_payments: { requested: true },
+        transfers: { requested: true },
+      },
+    });
+
+    await stripe.accounts.update(account.id, {
+      tos_acceptance: {
+        date: Math.floor(Date.now() / 1000),
+        ip: "127.0.0.1",
+      },
+    });
+    
+    user.stripeAccountId = account.id;
+    await user.save();
+
+    res.json(account);
   } catch (err) {
     res.status(500).send("Server Error");
   }
