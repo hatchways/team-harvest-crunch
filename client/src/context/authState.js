@@ -82,7 +82,7 @@ const AuthState = props => {
 
     const logout = () => {
         dispatch({type: "LOAD_USER_FAIL"});
-        localStorage.setItem("token", null );
+        localStorage.removeItem("token");
     }
 
     useEffect(() => {
