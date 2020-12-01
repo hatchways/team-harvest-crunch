@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
     Button,
@@ -10,12 +10,16 @@ import {
     FormControl,
     InputLabel,
     OutlinedInput,
-    Snackbar
+    Snackbar,
+    Card,
+    CardActionArea,
 } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import S3 from "aws-s3";
 import AuthContext from "../context/authContext";
 import Navbar from "./NavBar";
+import { useDropzone } from "react-dropzone";
+import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 
 const useStyles = makeStyles(theme => ({
     rootHeader: {
@@ -27,14 +31,21 @@ const useStyles = makeStyles(theme => ({
     title: {
         flexGrow: 1
     },
-    rootPaper: {
+    rootCard: {
         display: "flex",
         flexWrap: "wrap",
         "& > *": {
             margin: theme.spacing(1),
             width: "28%",
             height: theme.spacing(16),
-            marginTop: theme.spacing(4)
+            marginTop: theme.spacing(4),
+            display: "flex",
+            justify: "center",
+            "& > *": {
+                width: "100%",
+                margin: "auto",
+                height: theme.spacing(10),
+            }
         }
     },
     rootForm: {
@@ -54,6 +65,9 @@ const useStyles = makeStyles(theme => ({
         "& > * + *": {
             marginTop: theme.spacing(2)
         }
+    },
+    cardActionArea: {
+        height: theme.spacing(16),
     }
 }));
 
@@ -92,6 +106,7 @@ export default function CreateProduct() {
     const [isUserLoaded, setIsUserLoaded] = useState(false);
     const authContext = useContext(AuthContext);
     const { user, loadUser } = authContext;
+
     let config = {
         bucketName: "harvestcrunch-bakedgoods",
         region: "us-east-2",
@@ -106,18 +121,6 @@ export default function CreateProduct() {
         S3Client = new S3(config);
         setIsUserLoaded(true);
     }, [user._id]);
-
-    const handlePhotoButton = event => {
-        const photoFile = event.target.files[0];
-        const filename = photoFile.name.split(".")[0];
-        S3Client.uploadFile(photoFile, filename)
-            .then(data => {
-                files.push(data.location);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    };
 
     const submitProduct = () => {
         fetch("/product", {
@@ -159,6 +162,23 @@ export default function CreateProduct() {
         setSuccessOpen(false);
         setErrorOpen(false);
     };
+
+    const onDrop = useCallback(fileArray => {
+        const photoFile = fileArray[0];
+        const filename = photoFile.name.split(".")[0];
+        S3Client.uploadFile(photoFile, filename)
+            .then(data => {
+                files.push(data.location);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }, []);
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop
+    });
+
     return (
         <div>
             <Navbar />
@@ -188,7 +208,7 @@ export default function CreateProduct() {
                         <h1 className={classes.rootTitle}>
                             Upload new product
                         </h1>
-                        <div className={classes.rootPaper}>
+                        {/* <div className={classes.rootPaper}>
                             {["1", "2", "3", "4", "5", "6"].map(num => (
                                 <Paper key={num} elevation={3}>
                                     <input
@@ -198,6 +218,16 @@ export default function CreateProduct() {
                                         disabled={!isUserLoaded}
                                     />
                                 </Paper>
+                            ))}
+                        </div> */}
+                        <div className={classes.rootCard}>
+                            {["1", "2", "3", "4", "5", "6"].map(num => (
+                                <Card {...getRootProps()} className={classes.rootCard}>
+                                    <CardActionArea className={classes.CardActionArea}>
+                                        <input {...getInputProps()} />
+                                        <AddToPhotosIcon fontSize="small" />
+                                    </CardActionArea>
+                                </Card>
                             ))}
                         </div>
                     </Grid>
