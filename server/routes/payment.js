@@ -44,7 +44,7 @@ router.post(
               destination: seller.stripeAccountId,
             },
           },
-        success_url: "http://127.0.0.1:3000/product/" + product_id,
+        success_url: "http://127.0.0.1:3000/success/",
         cancel_url: "http://127.0.0.1:3000/product/" + product_id,
       });
 

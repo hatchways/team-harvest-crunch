@@ -12,6 +12,7 @@ import Product from "./pages/Product";
 import PrivateRoute from "./pages/PrivateRoute";
 import Home from "./pages/Home";
 import PersonalShop from "./pages/PersonalShop";
+import Success from "./pages/Success";
 import AuthState from "./context/authState";
 import StripeTest from "./pages/StripeTest";
 import "./App.css";
@@ -28,6 +29,7 @@ function App() {
                         {/* <Route path="/" component={LandingPage} /> */}
                         <Route path="/stripe-test" component={StripeTest}/>
                         <Route path="/product/:id" component={Product} />
+                        <Route path="/success" component={Success} />
                         <PrivateRoute
                             path="/create-product/"
                             component={CreateProduct}
