@@ -14,6 +14,7 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { makeStyles } from "@material-ui/core/styles";
 import AuthContext from "../context/authContext";
 import ProductContext from "../context/productContext";
+import Navbar from "./NavBar";
 
 const useStyles = makeStyles(theme => ({
     bottomGrid: {
@@ -76,82 +77,91 @@ const PersonalShop = props => {
     };
 
     return (
-        <Container maxWidth={"xl"} className={classes.root}>
-            <Grid container alignItems="center" spacing={0}>
-                <Grid item xs={5}>
-                    <Card elevation={3} className={classes.shopInfo}>
-                        <CardContent className={classes.cardContent}>
-                            <Typography variant="h5" component="h2">
-                                {user.shopName}
-                            </Typography>
-                            <Typography
-                                variant="body1"
-                                component="h4"
-                                className={classes.margin}
-                            >
-                                {user.shopDescription}
-                            </Typography>
-                            <Button
-                                variant="outlined"
-                                className={classes.margin}
-                            >
-                                CONTACT OWNER
-                            </Button>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={7}>
-                    <Card elevation={3}>
-                        <CardMedia
-                            className={classes.coverPhoto}
-                            image={user.shopCoverPic}
-                        />
-                    </Card>
-                </Grid>
-            </Grid>
-            <Grid
-                container
-                alignItems="center"
-                spacing={7}
-                className={classes.bottomGrid}
-            >
-                {!products ? (
-                    <Grid item xs={12}>
-                        <Button variant="outlined" size="large">
-                            CREATE PRODUCT
-                        </Button>
-                    </Grid>
-                ) : (
-                    products.map(p => (
-                        <Grid key={p._id} item xs={3}>
-                            <Card
-                                className={classes.card}
-                                style={{
-                                    backgroundImage: `url(${p.photos[0]})`
-                                }}
-                            >
-                                <CardActionArea
-                                    onClick={e => handleButton(e)}
-                                    id={p._id}
+        <div>
+            <Navbar />
+            <Container maxWidth={"xl"} className={classes.root}>
+                <Grid container alignItems="center" spacing={0}>
+                    <Grid item xs={5}>
+                        <Card elevation={3} className={classes.shopInfo}>
+                            <CardContent className={classes.cardContent}>
+                                <Typography variant="h5" component="h2">
+                                    {user.shopName}
+                                </Typography>
+                                <Typography
+                                    variant="body1"
+                                    component="h4"
+                                    className={classes.margin}
                                 >
-                                    <div className={classes.emptydiv}>
-                                        <FavoriteBorderIcon />
-                                    </div>
-                                    <AppBar position="static">
-                                        <Typography variant="h5" component="h2">
-                                            {p.title}
-                                        </Typography>
-                                        <Typography variant="h5" component="h2">
-                                            {"$" + p.price}
-                                        </Typography>
-                                    </AppBar>
-                                </CardActionArea>
-                            </Card>
+                                    {user.shopDescription}
+                                </Typography>
+                                <Button
+                                    variant="outlined"
+                                    className={classes.margin}
+                                >
+                                    CONTACT OWNER
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={7}>
+                        <Card elevation={3}>
+                            <CardMedia
+                                className={classes.coverPhoto}
+                                image={user.shopCoverPic}
+                            />
+                        </Card>
+                    </Grid>
+                </Grid>
+                <Grid
+                    container
+                    alignItems="center"
+                    spacing={7}
+                    className={classes.bottomGrid}
+                >
+                    {!products ? (
+                        <Grid item xs={12}>
+                            <Button variant="outlined" size="large">
+                                CREATE PRODUCT
+                            </Button>
                         </Grid>
-                    ))
-                )}
-            </Grid>
-        </Container>
+                    ) : (
+                        products.map(p => (
+                            <Grid key={p._id} item xs={3}>
+                                <Card
+                                    className={classes.card}
+                                    style={{
+                                        backgroundImage: `url(${p.photos[0]})`
+                                    }}
+                                >
+                                    <CardActionArea
+                                        onClick={e => handleButton(e)}
+                                        id={p._id}
+                                    >
+                                        <div className={classes.emptydiv}>
+                                            <FavoriteBorderIcon />
+                                        </div>
+                                        <AppBar position="static">
+                                            <Typography
+                                                variant="h5"
+                                                component="h2"
+                                            >
+                                                {p.title}
+                                            </Typography>
+                                            <Typography
+                                                variant="h5"
+                                                component="h2"
+                                            >
+                                                {"$" + p.price}
+                                            </Typography>
+                                        </AppBar>
+                                    </CardActionArea>
+                                </Card>
+                            </Grid>
+                        ))
+                    )}
+                </Grid>
+            </Container>
+        </div>
     );
 };
 

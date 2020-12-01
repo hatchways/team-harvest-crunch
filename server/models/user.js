@@ -34,6 +34,10 @@ const UserSchema = mongoose.Schema({
         type: String,
         default:
             "https://harvestcrunch-bakedgoods.s3-us-east-2.amazonaws.com/5fac90ecf662c13aa4730775/img7.png"
+    },
+    stripeAccountId: {
+        type: String,
+        required: false,
     }
 });
 

@@ -20,6 +20,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Pagination from "@material-ui/lab/Pagination";
 import ProductContext from "../context/productContext";
 import Loading from "./Loading";
+import Navbar from "./NavBar";
 
 const useStyles = makeStyles(theme => ({
     rightTopGrid: {
@@ -144,6 +145,7 @@ const Home = props => {
 
     return (
         <Container className={classes.root}>
+            <Navbar />
             <h1>Discover Baking Goods</h1>
 
             <Grid

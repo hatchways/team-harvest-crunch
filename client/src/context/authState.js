@@ -80,6 +80,11 @@ const AuthState = props => {
         }
     };
 
+    const logout = () => {
+        dispatch({type: "LOAD_USER_FAIL"});
+        localStorage.removeItem("token");
+    }
+
     useEffect(() => {
         loadUser(localStorage.getItem("token"));
     }, []);
@@ -92,7 +97,8 @@ const AuthState = props => {
                 loading: state.loading,
                 register,
                 loadUser,
-                login
+                login,
+                logout
             }}
         >
             {props.children}
