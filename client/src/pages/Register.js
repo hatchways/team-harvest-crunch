@@ -17,7 +17,7 @@ const Register = props => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            props.history.push("/personal-shop");
+            props.history.push("/");
         }
     }, [isAuthenticated, props.history]);
 
