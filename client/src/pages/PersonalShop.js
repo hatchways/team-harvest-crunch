@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
     margin: {
         margin: theme.spacing(3)
     },
-    adddiv: {
+    addDiv: {
         height: 262,
         margin: "auto",
         display: "flex",
@@ -179,7 +179,7 @@ const PersonalShop = props => {
                                         alignItems="center"
                                         display="flex"
                                         justifyContent="center"
-                                        className={classes.adddiv}
+                                        className={classes.addDiv}
                                     >
                                         <AddIcon />
                                     </Box>
