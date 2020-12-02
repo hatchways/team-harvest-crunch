@@ -24,7 +24,7 @@ function App() {
                 <ProductState>
                     <BrowserRouter>
                         {/* <Route path="/" component={LandingPage} /> */}
-                        <Route path="/stripe-test" component={StripeTest} />
+                        {/* <Route path="/stripe-test" component={StripeTest} /> */}
                         <Route path="/product/:id" component={Product} />
                         <PrivateRoute
                             path="/create-product/"
