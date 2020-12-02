@@ -61,6 +61,9 @@ export default function Navbar() {
                     <Link to="/shop-profile">
                         <Button className={classes.color}>MY ACCOUNT</Button>
                     </Link>
+                    <Link to="/create-product">
+                        <Button className={classes.color}>CREATE PRODUCT</Button>
+                    </Link>
                     <Button color="inherit" onClick={handleLogout}>LOGOUT</Button>
                 </Toolbar>
             </AppBar>
