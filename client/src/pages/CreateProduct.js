@@ -208,18 +208,6 @@ export default function CreateProduct() {
                         <h1 className={classes.rootTitle}>
                             Upload new product
                         </h1>
-                        {/* <div className={classes.rootPaper}>
-                            {["1", "2", "3", "4", "5", "6"].map(num => (
-                                <Paper key={num} elevation={3}>
-                                    <input
-                                        id={num}
-                                        type="file"
-                                        onChange={handlePhotoButton}
-                                        disabled={!isUserLoaded}
-                                    />
-                                </Paper>
-                            ))}
-                        </div> */}
                         <div className={classes.rootCard}>
                             {["1", "2", "3", "4", "5", "6"].map(num => (
                                 <Card {...getRootProps()} className={classes.rootCard}>
