@@ -37,7 +37,10 @@ const UserSchema = mongoose.Schema({
     },
     stripeAccountId: {
         type: String,
-        required: false,
+        required: false
+    },
+    conversation: {
+        type: [Object]
     }
 });
 

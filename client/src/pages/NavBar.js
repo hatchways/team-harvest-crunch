@@ -53,7 +53,9 @@ export default function Navbar() {
                     <Link to="/">
                         <Button className={classes.color}>SHOP</Button>
                     </Link>
-                    <Button color="inherit">MESSAGES</Button>
+                    <Link to="/messages">
+                        <Button className={classes.color}>MESSAGES</Button>
+                    </Link>
                     <Button color="inherit">MY FAVOURITES</Button>
                     <Link to="/personal-shop">
                         <Button className={classes.color}>MY SHOP</Button>
@@ -61,7 +63,9 @@ export default function Navbar() {
                     <Link to="/shop-profile">
                         <Button className={classes.color}>MY ACCOUNT</Button>
                     </Link>
-                    <Button color="inherit" onClick={handleLogout}>LOGOUT</Button>
+                    <Button color="inherit" onClick={handleLogout}>
+                        LOGOUT
+                    </Button>
                 </Toolbar>
             </AppBar>
         </div>

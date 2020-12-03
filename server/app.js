@@ -11,6 +11,7 @@ const pingRouter = require("./routes/ping");
 const userRouter = require("./routes/user");
 const productRouter = require("./routes/product");
 const paymentRouter = require("./routes/payment");
+const conversationRouter = require("./routes/conversations");
 
 const { json, urlencoded } = express;
 
@@ -40,6 +41,7 @@ app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/user", userRouter);
 app.use(productRouter);
+app.use("/messenger", conversationRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
