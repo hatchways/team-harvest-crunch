@@ -15,6 +15,7 @@ const OpenConversation = () => {
         sendMessage(text);
         setText("");
     };
+    console.log(selectedIndex);
     return (
         <div className="d-flex flex-column flex-grow-1">
             <div className="flex-grow-1 overflow-auto">
@@ -38,7 +39,7 @@ const OpenConversation = () => {
                         )}
                 </div>
             </div>
-            {selectedIndex && (
+            {(selectedIndex || selectedIndex == 0) && (
                 <form onSubmit={handleSubmit}>
                     <TextField
                         label={"Type here!!!"}
