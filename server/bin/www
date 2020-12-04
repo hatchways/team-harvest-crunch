@@ -33,35 +33,57 @@ const io = require("socket.io")(server, {
 const Conversations = require("../models/conversations");
 
 io.on("connection", socket => {
-    const id = socket.handshake.query.id;
-    socket.join(id);
-    console.log(socket.id);
     socket.on("send-message", async ({ users, messageObj }) => {
-        console.log(socket.id);
         const filterObj = {};
-        filterObj["users"] = users;
+        let queryUsers = [];
+        users.map(userId => queryUsers.push({ _id: userId }));
+        filterObj["users"] = queryUsers;
+        console.log(filterObj);
         let conversation = await Conversations.find(filterObj);
         if (conversation.length > 0) {
             conversation[0].messages.push(messageObj);
             const updatedConversation = conversation[0];
             conversation = updatedConversation;
         } else {
-            conversation = new Conversations({ users, messages });
+            conversation = new Conversations({ users, messages: messageObj });
+            try {
+                await conversation.save();
+                conversation = await Conversations.find(filterObj).populate(
+                    "users"
+                );
+                const modifiedUsers = conversation[0].users.filter(eachuser => {
+                    return eachuser._id != id;
+                });
+                conversation[0].users = modifiedUsers;
+
+                // conversations.map(conversation => {
+                //     const modifiedUsers = conversation.users.filter(
+                //         eachuser => {
+                //             return eachuser._id != id;
+                //         }
+                //     );
+                //     conversation.users = modifiedUsers;
+                // });
+                const {
+                    messages: lastmsg,
+                    _id: conversationId
+                } = conversation[0];
+                // const lastmsg = messages[messages.length - 1];
+                io.to(JSON.stringify(conversationId)).emit("receive-message", {
+                    conversationId,
+                    users,
+                    lastmsg
+                });
+            } catch (err) {
+                console.error(err.message);
+            }
         }
 
         try {
             await conversation.save();
             const { messages, _id: conversationId } = conversation;
             const lastmsg = messages[messages.length - 1];
-            // users.map(user => {
-            //     socket.to(user).emit("receive-message", {
-            //         conversationId,
-            //         users,
-            //         lastmsg
-            //     });
-            // });
-
-            io.to(users[1]).emit("receive-message", {
+            io.to(JSON.stringify(conversationId)).emit("receive-message", {
                 conversationId,
                 users,
                 lastmsg
@@ -69,6 +91,9 @@ io.on("connection", socket => {
         } catch (err) {
             console.error(err.message);
         }
+    });
+    socket.on("switch-conversation", conversationId => {
+        socket.join(JSON.stringify(conversationId));
     });
 });
 /**

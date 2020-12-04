@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 
 import AuthContext from "./authContext";
@@ -7,7 +7,7 @@ import SocketContext from "./socketContext";
 
 const ConversationState = props => {
     const [conversations, setConversations] = useState([]);
-    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [selectedIndex, setSelectedIndex] = useState();
 
     const { user } = useContext(AuthContext);
     const socket = useContext(SocketContext);
@@ -16,7 +16,6 @@ const ConversationState = props => {
         const query = "http://localhost:3001/messenger/conversations";
         try {
             const userId = user._id;
-            console.log(userId);
             const result = await axios.post(query, { userId });
 
             setConversations(result.data.conversations);
@@ -26,7 +25,7 @@ const ConversationState = props => {
     };
 
     const sendMessage = text => {
-        const { users } = conversations[selectedIndex];
+        const users = [user._id, conversations[selectedIndex].users[0]._id];
         const messageObj = { senderId: user._id, msg: text };
         socket.emit("send-message", { users, messageObj });
     };
@@ -47,7 +46,6 @@ const ConversationState = props => {
                     return conversationObj;
                 }
             );
-            console.log(existingConversation);
             if (existingConversation) {
                 return updatedConversations;
             } else {
@@ -59,8 +57,12 @@ const ConversationState = props => {
         });
     };
 
+    const switchConversation = index => {
+        const conversationId = conversations[index]._id;
+        socket.emit("switch-conversation", conversationId);
+    };
+
     useEffect(() => {
-        console.log(socket);
         if (socket) {
             socket.on("receive-message", ({ conversationId, users, lastmsg }) =>
                 addMessageToConversation({ conversationId, users, lastmsg })
@@ -72,7 +74,8 @@ const ConversationState = props => {
         <ConversationContext.Provider
             value={{
                 loadConversations,
-                conversations,
+                modifiedconversations: conversations,
+                switchConversation,
                 selectedConversation: conversations[selectedIndex] || {},
                 selectedIndex,
                 setSelectedIndex,

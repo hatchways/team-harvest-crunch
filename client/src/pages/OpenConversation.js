@@ -6,7 +6,7 @@ import ConversationContext from "../context/conversationContext";
 const OpenConversation = () => {
     const [text, setText] = useState("");
 
-    const { selectedConversation, sendMessage } = useContext(
+    const { selectedConversation, selectedIndex, sendMessage } = useContext(
         ConversationContext
     );
 
@@ -24,7 +24,9 @@ const OpenConversation = () => {
                             (messageObj, index) => {
                                 return (
                                     <div key={index}>
-                                        <div className={`rounded px-2 py-1`}>
+                                        <div
+                                            className={`rounded px-2 py-1 bg-primary text-white`}
+                                        >
                                             {messageObj.msg}
                                         </div>
                                         <div className="text-muted small">
@@ -36,19 +38,21 @@ const OpenConversation = () => {
                         )}
                 </div>
             </div>
-            <form onSubmit={handleSubmit}>
-                <TextField
-                    label={"Type here!!!"}
-                    style={{ margin: 8 }}
-                    fullWidth={true}
-                    value={text}
-                    onChange={e => setText(e.target.value)}
-                    variant="outlined"
-                />
-                <Button variant="contained" color="primary" type="submit">
-                    Send
-                </Button>
-            </form>
+            {selectedIndex && (
+                <form onSubmit={handleSubmit}>
+                    <TextField
+                        label={"Type here!!!"}
+                        style={{ margin: 8 }}
+                        fullWidth={true}
+                        value={text}
+                        onChange={e => setText(e.target.value)}
+                        variant="outlined"
+                    />
+                    <Button variant="contained" color="primary" type="submit">
+                        Send
+                    </Button>
+                </form>
+            )}
         </div>
     );
 };

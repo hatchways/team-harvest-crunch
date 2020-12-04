@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
         zIndex: theme.zIndex.drawer + 1
     },
     drawer: {
+        display: "flex",
         width: drawerWidth,
         flexShrink: 0
     },
@@ -36,9 +37,10 @@ const useStyles = makeStyles(theme => ({
 const Conversations = () => {
     const {
         loadConversations,
-        conversations,
+        modifiedconversations,
         setSelectedIndex,
-        selectedIndex
+        selectedIndex,
+        switchConversation
     } = useContext(ConversationContext);
 
     useEffect(() => {
@@ -47,6 +49,11 @@ const Conversations = () => {
         };
         getAllConversations();
     }, []);
+
+    const handleOnClick = index => {
+        switchConversation(index);
+        setSelectedIndex(index);
+    };
 
     const classes = useStyles();
     return (
@@ -61,16 +68,17 @@ const Conversations = () => {
             <div className={classes.drawerContainer}>
                 <Divider />
                 <List>
-                    {conversations.map((obj, index) => (
-                        <ListItem
-                            button
-                            selected={index === selectedIndex}
-                            onClick={() => setSelectedIndex(index)}
-                            key={obj._id}
-                        >
-                            <ListItemText primary={obj._id} />
-                        </ListItem>
-                    ))}
+                    {modifiedconversations.length > 0 &&
+                        modifiedconversations.map((obj, index) => (
+                            <ListItem
+                                button
+                                selected={index === selectedIndex}
+                                onClick={() => handleOnClick(index)}
+                                key={obj._id}
+                            >
+                                <ListItemText primary={obj.users[0].name} />
+                            </ListItem>
+                        ))}
                 </List>
                 <Divider />
             </div>

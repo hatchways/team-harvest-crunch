@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
 
 import Conversations from "./Conversations";
 import OpenConversation from "./OpenConversation";
-import SocketState from "./../context/socketState";
-import ConversationState from "./../context/conversationState";
+import Navbar from "./NavBar";
+import { Container, Grid } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
     root: {
-        display: "flex"
+        display: "flex",
+        "& > *": {
+            margin: theme.spacing(3)
+        }
     },
     content: {
         flexGrow: 1,
@@ -22,9 +23,18 @@ const Messages = () => {
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
-            <Conversations />
-            <OpenConversation />
+        <div>
+            <Navbar />
+            <Container className={classes.root}>
+                <Grid container>
+                    <Grid item xs={3}>
+                        <Conversations />
+                    </Grid>
+                    <Grid item xs={9}>
+                        <OpenConversation />
+                    </Grid>
+                </Grid>
+            </Container>
         </div>
     );
 };

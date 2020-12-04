@@ -10,15 +10,22 @@ router.post("/addUpdateConversation", async (req, res) => {
     //example { id: "", users: ["senderId", "receiverId"], messages: {senderId:"", msg:""} }
     const { users, messageObj } = req.body;
     const filterObj = {};
-    filterObj["users"] = users;
+    let queryUsers = [];
+    users.map(userId => queryUsers.push({ _id: userId }));
+    filterObj["users"] = queryUsers;
+    console.log(filterObj);
+    // filterObj["users"] = users;
     let conversation = await Conversations.find(filterObj);
     if (conversation.length > 0) {
         conversation[0].messages.push(messageObj);
         const updatedConversation = conversation[0];
-        console.log(updatedConversation);
+        // console.log(updatedConversation);
         conversation = updatedConversation;
     } else {
-        conversation = new Conversations({ users, messages: [messageObj] });
+        conversation = new Conversations({
+            users,
+            messages /*: [messageObj]*/
+        });
     }
     try {
         await conversation.save();
@@ -40,12 +47,19 @@ router.post("/conversations", async (req, res) => {
     //example { id: "", users: ["senderId", "receiverId"], messages: {senderId:"", msg:""} }
     const id = req.body.userId;
     const filterObj = {};
-    filterObj["users"] = id;
-    // if (!mongoose.Types.ObjectId.isValid(id)) {
-    //     return res.status(400).json({ msg: "id not valid" });
-    // }
+    filterObj["users"] = { _id: id };
+    console.log(filterObj);
     try {
-        const conversations = await Conversations.find(filterObj);
+        let conversations = await Conversations.find(filterObj).populate(
+            "users"
+        );
+        conversations.map(conversation => {
+            const modifiedUsers = conversation.users.filter(eachuser => {
+                return eachuser._id != id;
+            });
+            conversation.users = modifiedUsers;
+        });
+
         res.status(200).json({ conversations });
     } catch (err) {
         console.error(err.message);
