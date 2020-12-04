@@ -21,6 +21,9 @@ const PaymentSchema = mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    price: {
+
+    },
     date: {
         type: Date,
         default: Date.now,

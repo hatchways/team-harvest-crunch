@@ -52,6 +52,8 @@ router.post(
         productId: product._id,
         buyerId: user._id,
         sellerId: product.userId,
+        productTitle: product.title,
+        price: product.price,
         sessionId: session.id,
       });
 
@@ -105,6 +107,24 @@ router.post("/create-stripe-account/:id", async (req, res) => {
     res.json(account);
   } catch (err) {
     res.status(500).send("Server Error");
+  }
+});
+
+// @route     GET /purchase-history
+// @desc      Get all purchases
+// @access    Public
+router.get("/purchase-history/:id", async (req, res) => {
+  try {
+      let id = req.params.id;
+
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+          return res.status(400).json({ msg: "id not valid" });
+      }
+      let payment = await Payment.find({ buyerId: id, completePurchase: true });
+
+      res.json(payment);
+  } catch (err) {
+      res.status(500).send("Server Error");
   }
 });
 

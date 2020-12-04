@@ -13,6 +13,7 @@ import PrivateRoute from "./pages/PrivateRoute";
 import Home from "./pages/Home";
 import PersonalShop from "./pages/PersonalShop";
 import Success from "./pages/Success";
+import PurchaseHistory from "./pages/PurchaseHistory"
 import AuthState from "./context/authState";
 import ProductState from "./context/productState";
 
@@ -39,6 +40,10 @@ function App() {
                         <PrivateRoute
                             path="/personal-shop"
                             component={PersonalShop}
+                        />
+                        <PrivateRoute
+                            path="/purchase-history"
+                            component={PurchaseHistory}
                         />
                         <Route path="/register" component={Register} />
                         <Route path="/login" component={Login} />
