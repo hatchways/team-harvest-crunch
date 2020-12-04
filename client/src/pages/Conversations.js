@@ -20,10 +20,11 @@ const useStyles = makeStyles(theme => ({
     drawer: {
         display: "flex",
         width: drawerWidth,
-        flexShrink: 0
+        flexShrink: 0,
     },
     drawerPaper: {
-        width: drawerWidth
+        width: drawerWidth,
+        zIndex: -5,
     },
     drawerContainer: {
         overflow: "auto"
