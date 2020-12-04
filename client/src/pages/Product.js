@@ -180,10 +180,12 @@ export default function Product(props) {
                             items={images}
                             thumbnailPosition="left"
                         />
-                        ;
                     </Grid>
                     <Grid item xs={6}>
                         <p>Jeremy Wells</p>
+                        <Button variant="contained" color="primary">
+                            Contact
+                        </Button>
                         <h1>{title}</h1>
                         <p>{description}</p>
                         <h3>CAD {price}.00</h3>

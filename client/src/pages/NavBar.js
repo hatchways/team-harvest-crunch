@@ -65,7 +65,7 @@ export default function Navbar() {
                     open={open}
                     autoHideDuration={6000}
                     onClose={handleClose}
-                    anchorOrigin={{ vertical:"top", horizontal:"center" }}
+                    anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 >
                     <Alert onClose={handleClose} severity="success">
                         Logged Out!
@@ -95,7 +95,11 @@ export default function Navbar() {
                     </Link>
                     {isAuthenticated ? (
                         <div>
-                            <Button color="inherit">MESSAGES</Button>
+                            <Link to="/messages">
+                                <Button className={classes.color}>
+                                    MESSAGES
+                                </Button>
+                            </Link>
                             <Link to="/purchase-history">
                                 <Button className={classes.color}>
                                     PURCHASE HISTORY

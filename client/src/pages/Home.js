@@ -59,7 +59,8 @@ const Home = props => {
     const { loadAllProducts, loading } = productContext;
     const [products, setProducts] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
-    const [state, setState] = React.useState({
+    const [currentPage, setCurrentPage] = useState(1);
+    const [state, setState] = useState({
         checkboxList: ["Cake", "Cupcake", "Macarons", "Cookies", "Confections"],
         radioList: [
             { id: 1, name: "Any", value: [0, 1000] },
@@ -75,6 +76,7 @@ const Home = props => {
     useEffect(() => {
         const getAllProducts = async () => {
             const result = await loadAllProducts({});
+            // const resultObj = JSON.parse(result);
             const count = Math.ceil(result.size / limit);
             setProducts(result.products);
             setTotalPages(count);
@@ -96,7 +98,8 @@ const Home = props => {
                 ? productType.push(e.target.name)
                 : productType.splice(productType.indexOf(e.target.name), 1);
 
-            price.length > 0 &&
+            price[0] &&
+                price[0] !== "" &&
                 price[0].split(",").map(str => newPrice.push(parseInt(str)));
             setState({
                 ...state,
@@ -104,7 +107,9 @@ const Home = props => {
                 ["search"]: ""
             });
         } else {
-            value.split(",").map(str => newPrice.push(parseInt(str)));
+            if (value.length > 0) {
+                value.split(",").map(str => newPrice.push(parseInt(str)));
+            }
             setState({ ...state, [e.target.name]: [value], ["search"]: "" });
         }
         const filterObj = { limit, filters: { productType, price: newPrice } };
@@ -112,12 +117,14 @@ const Home = props => {
         const count = Math.ceil(result.size / limit);
         setProducts(result.products);
         setTotalPages(count);
+        setCurrentPage(1);
     };
 
     const handlePagination = async (e, page) => {
         const { productType, price, search } = { ...state };
         const newPrice = [];
-        price.length > 0 &&
+        price[0] &&
+            price[0] !== "" &&
             price[0].split(",").map(str => newPrice.push(parseInt(str)));
         const filterObj = {
             search,
@@ -125,8 +132,10 @@ const Home = props => {
             limit,
             filters: { productType, price: newPrice }
         };
+        console.log(filterObj);
         const result = await loadAllProducts(filterObj);
         setProducts(result.products);
+        setCurrentPage(page);
         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     };
     const handleSearch = async () => {
@@ -140,6 +149,7 @@ const Home = props => {
             search,
             filters: { productType, price: newPrice }
         };
+        console.log(filterObj);
         const result = await loadAllProducts(filterObj);
         const count = Math.ceil(result.size / limit);
         setProducts(result.products);
@@ -281,6 +291,7 @@ const Home = props => {
                                     <Pagination
                                         size="large"
                                         count={totalPages}
+                                        page={currentPage}
                                         onChange={handlePagination}
                                         variant="outlined"
                                         shape="rounded"

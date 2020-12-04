@@ -23,6 +23,79 @@ app.set("port", port);
 
 var server = http.createServer(app);
 
+//socket io
+const io = require("socket.io")(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"]
+    }
+});
+const Conversations = require("../models/conversations");
+
+io.on("connection", socket => {
+    socket.on("send-message", async ({ users, messageObj }) => {
+        const filterObj = {};
+        let queryUsers = [];
+        users.map(userId => queryUsers.push({ _id: userId }));
+        filterObj["users"] = queryUsers;
+        console.log(filterObj);
+        let conversation = await Conversations.find(filterObj);
+        if (conversation.length > 0) {
+            conversation[0].messages.push(messageObj);
+            const updatedConversation = conversation[0];
+            conversation = updatedConversation;
+        } else {
+            conversation = new Conversations({ users, messages: messageObj });
+            try {
+                await conversation.save();
+                conversation = await Conversations.find(filterObj).populate(
+                    "users"
+                );
+                const modifiedUsers = conversation[0].users.filter(eachuser => {
+                    return eachuser._id != id;
+                });
+                conversation[0].users = modifiedUsers;
+
+                // conversations.map(conversation => {
+                //     const modifiedUsers = conversation.users.filter(
+                //         eachuser => {
+                //             return eachuser._id != id;
+                //         }
+                //     );
+                //     conversation.users = modifiedUsers;
+                // });
+                const {
+                    messages: lastmsg,
+                    _id: conversationId
+                } = conversation[0];
+                // const lastmsg = messages[messages.length - 1];
+                io.to(JSON.stringify(conversationId)).emit("receive-message", {
+                    conversationId,
+                    users,
+                    lastmsg
+                });
+            } catch (err) {
+                console.error(err.message);
+            }
+        }
+
+        try {
+            await conversation.save();
+            const { messages, _id: conversationId } = conversation;
+            const lastmsg = messages[messages.length - 1];
+            io.to(JSON.stringify(conversationId)).emit("receive-message", {
+                conversationId,
+                users,
+                lastmsg
+            });
+        } catch (err) {
+            console.error(err.message);
+        }
+    });
+    socket.on("switch-conversation", conversationId => {
+        socket.join(JSON.stringify(conversationId));
+    });
+});
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -36,19 +109,19 @@ server.on("listening", onListening);
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+    var port = parseInt(val, 10);
 
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
 
-  if (port >= 0) {
-    // port number
-    return port;
-  }
+    if (port >= 0) {
+        // port number
+        return port;
+    }
 
-  return false;
+    return false;
 }
 
 /**
@@ -56,25 +129,25 @@ function normalizePort(val) {
  */
 
 function onError(error) {
-  if (error.syscall !== "listen") {
-    throw error;
-  }
+    if (error.syscall !== "listen") {
+        throw error;
+    }
 
-  var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+    var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case "EACCES":
-      console.error(bind + " requires elevated privileges");
-      process.exit(1);
-      break;
-    case "EADDRINUSE":
-      console.error(bind + " is already in use");
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case "EACCES":
+            console.error(bind + " requires elevated privileges");
+            process.exit(1);
+            break;
+        case "EADDRINUSE":
+            console.error(bind + " is already in use");
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
 }
 
 /**
@@ -82,8 +155,8 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+    var addr = server.address();
+    var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
 
-  console.log("Listening on " + bind);
+    console.log("Listening on " + bind);
 }

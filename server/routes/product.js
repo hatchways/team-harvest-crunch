@@ -154,7 +154,6 @@ router.get("/product/:id", async (req, res) => {
 // @desc      Get all products for shop
 // @access    Public
 router.get("/product/:shop_id/products", async (req, res) => {
-    console.log(req.header("x-auth-token"));
     try {
         let id = req.params.shop_id;
 
