@@ -38,7 +38,7 @@ const OpenConversation = () => {
                         )}
                 </div>
             </div>
-            {selectedIndex && (
+            {(selectedIndex || selectedIndex == 0) && (
                 <form onSubmit={handleSubmit}>
                     <TextField
                         label={"Type here!!!"}
