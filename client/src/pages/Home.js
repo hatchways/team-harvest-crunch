@@ -47,6 +47,9 @@ const useStyles = makeStyles(theme => ({
     emptydiv: {
         marginBottom: theme.spacing(30),
         textAlign: "left"
+    },
+    productGrid: {
+        marginTop: theme.spacing(3),
     }
 }));
 const limit = 20;
@@ -59,7 +62,7 @@ const Home = props => {
     const [state, setState] = React.useState({
         checkboxList: ["Cake", "Cupcake", "Macarons", "Cookies", "Confections"],
         radioList: [
-            { id: 1, name: "Any", value: [] },
+            { id: 1, name: "Any", value: [0, 1000] },
             { id: 2, name: "$1 to $20", value: [1, 20] },
             { id: 3, name: "$21 to $40", value: [21, 40] },
             { id: 4, name: "$41 to $60", value: [41, 60] }
@@ -144,151 +147,151 @@ const Home = props => {
     };
 
     return (
-        <Container className={classes.root}>
+        <div>
             <Navbar />
-            <h1>Discover Baking Goods</h1>
+            <Container className={classes.root}>
+                <h1>Discover Baking Goods</h1>
 
-            <Grid
-                container
-                spacing={3}
-                justify="center"
-                className={classes.rightTopGrid}
-            >
-                <Grid item xs={3}>
-                    <FormGroup>
-                        <FormLabel component="label">PRODUCT TYPE</FormLabel>
-                        {state.checkboxList.map(ptype => (
-                            <FormControlLabel
-                                key={ptype}
-                                control={
-                                    <Checkbox
-                                        style={{ color: "ThreeDDarkShadow" }}
-                                        onChange={handleChange}
-                                        name={ptype}
-                                    />
-                                }
-                                label={ptype}
-                            />
-                        ))}
-                    </FormGroup>
-                    <div>
-                        <FormLabel component="label">PRICE</FormLabel>
-                        <RadioGroup
-                            aria-label="PRICE"
-                            name="price"
-                            value={`${state.price}`}
-                            onChange={handleChange}
-                        >
-                            {state.radioList.map(obj => (
+                <Grid
+                    container
+                    spacing={3}
+                    justify="center"
+                    className={classes.rightTopGrid}
+                >
+                    <Grid item xs={3}>
+                        <FormGroup>
+                            <FormLabel component="label">
+                                PRODUCT TYPE
+                            </FormLabel>
+                            {state.checkboxList.map(ptype => (
                                 <FormControlLabel
-                                    key={obj.id}
-                                    value={`${obj.value}`}
+                                    key={ptype}
                                     control={
-                                        <Radio
+                                        <Checkbox
                                             style={{
                                                 color: "ThreeDDarkShadow"
                                             }}
+                                            onChange={handleChange}
+                                            name={ptype}
                                         />
                                     }
-                                    label={obj.name}
+                                    label={ptype}
                                 />
                             ))}
-                        </RadioGroup>
-                    </div>
-                </Grid>
-                <Grid item xs={9}>
-                    <TextField
-                        fullWidth={true}
-                        id="search"
-                        label="Find you favourite product here"
-                        type="search"
-                        variant="outlined"
-                        value={state.search}
-                        onChange={e =>
-                            setState({
-                                ...state,
-                                [e.target.id]: e.target.value
-                            })
-                        }
-                    />
-                    <Button
-                        className={classes.pagination}
-                        variant="outlined"
-                        size="large"
-                        onClick={handleSearch}
-                    >
-                        Search
-                    </Button>
-                    <Grid
-                        container
-                        justify="center"
-                        alignItems="center"
-                        spacing={3}
-                    >
-                        {loading && <Loading />}
-                        {products.map(p => (
-                            <Grid key={p._id} item xs={4}>
-                                <Card
-                                    className={classes.card}
-                                    style={{
-                                        backgroundImage: `url(${p.photos[0]})`
-                                    }}
-                                >
-                                    <CardActionArea
-                                        onClick={e => handleButton(e)}
-                                        id={p._id}
+                        </FormGroup>
+                        <div>
+                            <FormLabel component="label">PRICE</FormLabel>
+                            <RadioGroup
+                                aria-label="PRICE"
+                                name="price"
+                                value={`${state.price}`}
+                                onChange={handleChange}
+                            >
+                                {state.radioList.map(obj => (
+                                    <FormControlLabel
+                                        key={obj.id}
+                                        value={`${obj.value}`}
+                                        control={
+                                            <Radio
+                                                style={{
+                                                    color: "ThreeDDarkShadow"
+                                                }}
+                                            />
+                                        }
+                                        label={obj.name}
+                                    />
+                                ))}
+                            </RadioGroup>
+                        </div>
+                    </Grid>
+                    <Grid item xs={9}>
+                        <TextField
+                            fullWidth={true}
+                            id="search"
+                            label="Find you favourite product here"
+                            type="search"
+                            variant="outlined"
+                            value={state.search}
+                            onChange={e => {
+                                setState({
+                                    ...state,
+                                    [e.target.id]: e.target.value
+                                });
+                                handleSearch();
+                            }}
+                        />
+                        <Grid
+                            container
+                            justify="center"
+                            alignItems="center"
+                            spacing={3}
+                            className={classes.productGrid}
+                        >
+                            {loading && <Loading />}
+                            {products.map(p => (
+                                <Grid key={p._id} item xs={4}>
+                                    <Card
+                                        className={classes.card}
+                                        style={{
+                                            backgroundImage: `url(${p.photos[0]})`
+                                        }}
                                     >
-                                        <div className={classes.emptydiv}>
-                                            <FavoriteBorderIcon />
-                                        </div>
-                                        <AppBar position="static">
-                                            <Typography
-                                                variant="h5"
-                                                component="h2"
-                                            >
-                                                {p.title}
-                                            </Typography>
-                                            <Typography
-                                                variant="h5"
-                                                component="h2"
-                                            >
-                                                {"$" + p.price}
-                                            </Typography>
-                                        </AppBar>
-                                    </CardActionArea>
-                                </Card>
-                            </Grid>
-                        ))}
+                                        <CardActionArea
+                                            onClick={e => handleButton(e)}
+                                            id={p._id}
+                                        >
+                                            <div className={classes.emptydiv}>
+                                                <FavoriteBorderIcon />
+                                            </div>
+                                            <AppBar position="static">
+                                                <Typography
+                                                    variant="h5"
+                                                    component="h2"
+                                                >
+                                                    {p.title}
+                                                </Typography>
+                                                <Typography
+                                                    variant="h5"
+                                                    component="h2"
+                                                >
+                                                    {"$" + p.price}
+                                                </Typography>
+                                            </AppBar>
+                                        </CardActionArea>
+                                    </Card>
+                                </Grid>
+                            ))}
 
-                        {!loading && products.length === 0 ? (
-                            <Grid
-                                container
-                                justify="center"
-                                className={classes.pagination}
-                            >
-                                <FormLabel>
-                                    Sorry, No Products Available!!!
-                                </FormLabel>
-                            </Grid>
-                        ) : (
-                            <Grid
-                                container
-                                justify="center"
-                                className={classes.pagination}
-                            >
-                                <Pagination
-                                    size="large"
-                                    count={totalPages}
-                                    onChange={handlePagination}
-                                    variant="outlined"
-                                    shape="rounded"
-                                />
-                            </Grid>
-                        )}
+                            {!loading && products.length === 0 ? (
+                                <Grid
+                                    container
+                                    justify="center"
+                                    className={classes.pagination}
+                                >
+                                    <FormLabel>
+                                        Sorry, No Products Available!!!
+                                    </FormLabel>
+                                </Grid>
+                            ) : (
+                                <Grid
+                                    container
+                                    justify="center"
+                                    className={classes.pagination}
+                                >
+                                    <Pagination
+                                        size="large"
+                                        count={totalPages}
+                                        onChange={handlePagination}
+                                        variant="outlined"
+                                        shape="rounded"
+                                    />
+                                </Grid>
+                            )}
+                        </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
-        </Container>
+            </Container>
+        </div>
     );
 };
 
