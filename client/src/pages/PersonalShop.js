@@ -8,13 +8,16 @@ import {
     CardMedia,
     Button,
     CardContent,
-    CardActionArea
+    CardActionArea,
+    Box
 } from "@material-ui/core";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import AddIcon from "@material-ui/icons/Add";
 import { makeStyles } from "@material-ui/core/styles";
 import AuthContext from "../context/authContext";
 import ProductContext from "../context/productContext";
 import Navbar from "./NavBar";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     bottomGrid: {
@@ -55,6 +58,15 @@ const useStyles = makeStyles(theme => ({
     },
     margin: {
         margin: theme.spacing(3)
+    },
+    addDiv: {
+        height: 262,
+        margin: "auto",
+        display: "flex",
+        textAlign: "center",
+        "& > *": {
+            fontSize: "80px"
+        }
     }
 }));
 
@@ -159,6 +171,30 @@ const PersonalShop = props => {
                             </Grid>
                         ))
                     )}
+                    <Grid item xs={3}>
+                        <Link to="/create-product">
+                            <Card className={classes.card}>
+                                <CardActionArea>
+                                    <Box
+                                        alignItems="center"
+                                        display="flex"
+                                        justifyContent="center"
+                                        className={classes.addDiv}
+                                    >
+                                        <AddIcon />
+                                    </Box>
+                                    <AppBar position="static">
+                                        <Typography variant="h5" component="h2">
+                                            {"Add"}
+                                        </Typography>
+                                        <Typography variant="h5" component="h2">
+                                            {"Product"}
+                                        </Typography>
+                                    </AppBar>
+                                </CardActionArea>
+                            </Card>
+                        </Link>
+                    </Grid>
                 </Grid>
             </Container>
         </div>

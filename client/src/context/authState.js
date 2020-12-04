@@ -81,7 +81,7 @@ const AuthState = props => {
     };
 
     const logout = () => {
-        dispatch({type: "LOAD_USER_FAIL"});
+        dispatch({type: "LOGOUT_USER"});
         localStorage.removeItem("token");
     }
 

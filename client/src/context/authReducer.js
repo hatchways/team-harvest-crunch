@@ -25,7 +25,7 @@ export default (state, action) => {
                 ...state,
                 user: { _id: "", name: "", email: "", date: "", __v: 0 },
                 isAuthenticated: false,
-                loading: true
+                loading: false,
             };
 
         default:

@@ -13,6 +13,8 @@ import PrivateRoute from "./pages/PrivateRoute";
 import Home from "./pages/Home";
 import Messages from "./pages/Messages";
 import PersonalShop from "./pages/PersonalShop";
+import Success from "./pages/Success";
+import PurchaseHistory from "./pages/PurchaseHistory";
 import AuthState from "./context/authState";
 import ProductState from "./context/productState";
 import SocketState from "./context/socketState";
@@ -30,6 +32,7 @@ function App() {
                             <BrowserRouter>
                                 {/* <Route path="/" component={LandingPage} /> */}
                                 {/* <Route path="/stripe-test" component={StripeTest} /> */}
+                                <Route path="/success" component={Success} />
                                 <Route
                                     path="/product/:id"
                                     component={Product}
@@ -49,6 +52,10 @@ function App() {
                                 <PrivateRoute
                                     path="/personal-shop"
                                     component={PersonalShop}
+                                />
+                                <PrivateRoute
+                                    path="/purchase-history"
+                                    component={PurchaseHistory}
                                 />
                                 <Route path="/register" component={Register} />
                                 <Route path="/login" component={Login} />

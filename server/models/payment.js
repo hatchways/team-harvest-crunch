@@ -21,6 +21,14 @@ const PaymentSchema = mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    price: {
+        type: Number,
+        required: true,
+    },
+    productTitle: {
+        type: String,
+        required: true,
+    },
     date: {
         type: Date,
         default: Date.now,

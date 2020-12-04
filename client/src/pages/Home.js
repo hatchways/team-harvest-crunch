@@ -47,6 +47,9 @@ const useStyles = makeStyles(theme => ({
     emptydiv: {
         marginBottom: theme.spacing(30),
         textAlign: "left"
+    },
+    productGrid: {
+        marginTop: theme.spacing(3),
     }
 }));
 const limit = 20;
@@ -60,7 +63,7 @@ const Home = props => {
     const [state, setState] = useState({
         checkboxList: ["Cake", "Cupcake", "Macarons", "Cookies", "Confections"],
         radioList: [
-            { id: 1, name: "Any", value: [] },
+            { id: 1, name: "Any", value: [0, 1000] },
             { id: 2, name: "$1 to $20", value: [1, 20] },
             { id: 3, name: "$21 to $40", value: [21, 40] },
             { id: 4, name: "$41 to $60", value: [41, 60] }
@@ -219,26 +222,20 @@ const Home = props => {
                             type="search"
                             variant="outlined"
                             value={state.search}
-                            onChange={e =>
+                            onChange={e => {
                                 setState({
                                     ...state,
                                     [e.target.id]: e.target.value
-                                })
-                            }
+                                });
+                                handleSearch();
+                            }}
                         />
-                        <Button
-                            className={classes.pagination}
-                            variant="outlined"
-                            size="large"
-                            onClick={handleSearch}
-                        >
-                            Search
-                        </Button>
                         <Grid
                             container
                             justify="center"
                             alignItems="center"
                             spacing={3}
+                            className={classes.productGrid}
                         >
                             {loading && <Loading />}
                             {products.map(p => (
