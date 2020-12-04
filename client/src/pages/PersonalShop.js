@@ -171,9 +171,9 @@ const PersonalShop = props => {
                             </Grid>
                         ))
                     )}
-                    <Link to="/create-product">
-                        <Grid item xs={3}>
-                            <Card className={classes.card} style={{}}>
+                    <Grid item xs={3}>
+                        <Link to="/create-product">
+                            <Card className={classes.card}>
                                 <CardActionArea>
                                     <Box
                                         alignItems="center"
@@ -193,8 +193,8 @@ const PersonalShop = props => {
                                     </AppBar>
                                 </CardActionArea>
                             </Card>
-                        </Grid>
-                    </Link>
+                        </Link>
+                    </Grid>
                 </Grid>
             </Container>
         </div>
