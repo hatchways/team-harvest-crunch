@@ -22,7 +22,12 @@ const PaymentSchema = mongoose.Schema({
         default: false,
     },
     price: {
-
+        type: Number,
+        required: true,
+    },
+    productTitle: {
+        type: String,
+        required: true,
     },
     date: {
         type: Date,
