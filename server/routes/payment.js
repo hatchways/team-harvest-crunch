@@ -21,11 +21,14 @@ router.post(
     try {
       const product = await Product.findById(product_id);
 
+      
+
       if (!mongoose.Types.ObjectId.isValid(user_id)) {
         return res.status(400).json({ msg: "user_id not valid" });
       }
 
       const user = await User.findById(user_id);
+      
 
       const seller = await User.findById(product.userId);
 
@@ -70,6 +73,7 @@ router.post("/webhook", async (req, res) => {
   const sessionId = req.body.data.object.id;
 
   try {
+    console.log(req.body);
     let payment = await Payment.findOne({ sessionId });
 
     payment.completePurchase = true;
